@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "848527654072",
+    "project_id": "travelapp-gobuddy",
+    "storage_bucket": "travelapp-gobuddy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848527654072:android:7f0ce2de816cb0553c884d",
+        "android_client_info": {
+          "package_name": "com.midterm.travelapp_gobuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD661XZpT_U2sEWA5JCNny9dWCxMfR_B-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
