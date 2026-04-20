@@ -16,12 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
+import com.midterm.travelapp_gobuddy.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter adapterCategory;
     private RecyclerView recyclerViewCategory;
     private FirebaseDatabase database;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
