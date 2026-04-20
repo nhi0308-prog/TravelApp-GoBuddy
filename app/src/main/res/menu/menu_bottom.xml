@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/explorer"
+        android:icon="@drawable/bottom_btn1"
+        android:title="Khám phá"
+        app:cnb_backgroundColor="#E3F2FD"
+        app:cnb_iconColor="#1976D2" />
+    <item
+    android:id="@+id/wishlist"
+    android:icon="@drawable/bottom_btn2"
+    android:title="Yêu thích"
+    app:cnb_backgroundColor="#FCE4EC"
+    app:cnb_iconColor="#C2185B" />
+    <item
+    android:id="@+id/cart"
+    android:icon="@drawable/bottom_btn3"
+    android:title="Giỏ hàng"
+    app:cnb_backgroundColor="#E8F5E9"
+    app:cnb_iconColor="#388E3C" />
+    <item
+    android:id="@+id/profile"
+    android:icon="@drawable/bottom_btn4"
+    android:title="Cá nhân"
+    app:cnb_backgroundColor="#FFF3E0"
+    app:cnb_iconColor="#F57C00" />
+</menu>
