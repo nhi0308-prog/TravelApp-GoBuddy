@@ -8,7 +8,6 @@ android {
     compileSdk {
         version = release(36)
     }
-
     defaultConfig {
         applicationId = "com.midterm.travelapp_gobuddy"
         minSdk = 24
