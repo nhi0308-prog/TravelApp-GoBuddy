@@ -43,10 +43,10 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/titleTxt"
-            app:layout_constraintTop_toBottomOf="@+id/titleTxt"
-            app:srcCompat="@drawable/location"
-            tools:layout_constraintTop_toBottomOf="@id/textView2" />
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTxt"
+            app:srcCompat="@drawable/location" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -85,14 +85,13 @@
             android:id="@+id/addressTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:text="address"
             android:textSize="12sp"
             android:textColor="@color/darkBlue"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toEndOf="@id/imageView2"
+            app:layout_constraintTop_toTopOf="@id/imageView2"
+            app:layout_constraintBottom_toBottomOf="@id/imageView2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
