@@ -5,6 +5,7 @@ public class Category {
     private String name;
     private String imagePath;
 
+
     public Category() {
     }
 

@@ -18,6 +18,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.viewhold
     Context context;
     ViewholderPopularBinding binding;
 
+
     public PopularAdapter(ArrayList<ItemModel> items) {
         this.items = items;
     }

@@ -11,6 +11,7 @@ public class ItemModel implements Serializable {
     private String timeTour;
     private String dateTour;
     private int price;
+
     private int bed;
     private String distance;
     private double score;
