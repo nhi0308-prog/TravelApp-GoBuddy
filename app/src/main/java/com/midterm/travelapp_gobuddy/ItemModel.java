@@ -67,7 +67,6 @@ public class ItemModel implements Serializable {
         }
         return "";
     }
-
     public boolean isWifi() { return wifi; }
     public void setWifi(boolean wifi) { this.wifi = wifi; }
 
