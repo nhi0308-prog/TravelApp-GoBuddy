@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#F6F6F6"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- LOGO -->
+        <ImageView
+            android:src="@drawable/gobuddylogo"
+            android:layout_marginTop="40dp"
+            android:layout_width="180dp"
+            android:layout_height="80dp"/>
+
+        <!-- TITLE -->
+        <TextView
+            android:text="Log In to GoBuddy.com"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- EMAIL -->
+        <LinearLayout
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+
+            <ImageView
+                android:src="@drawable/ic_email"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:hint="Email Address"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <!-- PASSWORD -->
+        <LinearLayout
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp">
+
+            <ImageView
+                android:src="@drawable/ic_lock"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/btnEye"
+                android:src="@drawable/ic_eye"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+        </LinearLayout>
+
+        <!-- FORGOT -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textSize="12sp"
+            android:textColor="#555"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="end"/>
+
+        <!-- BUTTON -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:text="Log In"
+            android:textColor="#fff"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_button"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"/>
+
+        <!-- OR -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or sign in with:"
+            android:textSize="13sp"
+            android:textColor="#777"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+
+        <!-- SOCIAL -->
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Google -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/google"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Google"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- Facebook -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/facebook"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Facebook"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- Apple -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/apple"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apple"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- Microsoft -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/microsoft"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Microsoft"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- LINE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginTop="20dp"/>
+
+        <!-- SIGNUP -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Sign Up"
+            android:textSize="13sp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"/>
+
+        <!-- LINE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginTop="15dp"/>
+
+        <!-- GUEST -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue as Guest"
+            android:textColor="#888"
+            android:textSize="13sp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</ScrollView>
