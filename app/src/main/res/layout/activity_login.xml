@@ -30,6 +30,7 @@
         <LinearLayout
             android:background="@drawable/bg_input"
             android:padding="12dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="55dp">
@@ -52,6 +53,7 @@
         <LinearLayout
             android:background="@drawable/bg_input"
             android:padding="12dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:layout_width="match_parent"
@@ -66,6 +68,7 @@
                 android:id="@+id/edtPassword"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:singleLine="true"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
@@ -76,7 +79,10 @@
                 android:id="@+id/btnEye"
                 android:src="@drawable/ic_eye"
                 android:layout_width="24dp"
-                android:layout_height="24dp"/>
+                android:layout_height="24dp"
+                android:padding="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 
         <TextView

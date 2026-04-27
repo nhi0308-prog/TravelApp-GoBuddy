@@ -2,7 +2,8 @@ package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,15 +36,22 @@ public class LoginActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance().getReference("users");
 
-        // 👁 show password
         btnEye.setOnClickListener(v -> {
+
             if (isShow) {
-                edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                // 🔒 Ẩn
+                edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                btnEye.setImageResource(R.drawable.ic_eye);
+                isShow = false;
+
             } else {
-                edtPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                // 👁 Hiện
+                edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                btnEye.setImageResource(R.drawable.ic_eyeon);
+                isShow = true;
             }
-            edtPassword.setSelection(edtPassword.length());
-            isShow = !isShow;
+
+            edtPassword.setSelection(edtPassword.getText().length());
         });
 
         // 🔐 LOGIN
@@ -63,24 +71,20 @@ public class LoginActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
 
                             if (snapshot.exists()) {
-                                boolean ok = false;
 
                                 for (DataSnapshot data : snapshot.getChildren()) {
                                     String dbPass = data.child("password").getValue(String.class);
 
-                                    if (pass.equals(dbPass)) {
-                                        ok = true;
-                                        break;
+                                    if (dbPass != null && dbPass.equals(pass)) {
+                                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
+
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        finish();
+                                        return;
                                     }
                                 }
 
-                                if (ok) {
-                                    Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    finish();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
-                                }
+                                Toast.makeText(LoginActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 Toast.makeText(LoginActivity.this, "Account not found", Toast.LENGTH_SHORT).show();
