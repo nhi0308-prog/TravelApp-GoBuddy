@@ -27,32 +27,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        // ✅ FIX 1: init binding
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // ✅ FIX 2: init database trước
+        database = FirebaseDatabase.getInstance();
 
         initCategory();
         initPopular();
-
     }
 
     private void initPopular() {
-        DatabaseReference myref=database.getReference("Popular");
+        DatabaseReference myref = database.getReference("Popular");
+
         binding.progressBarPopular.setVisibility(View.VISIBLE);
-        ArrayList<ItemModel> list=new ArrayList<>();
+        ArrayList<ItemModel> list = new ArrayList<>();
+
         myref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for(DataSnapshot issue : snapshot.getChildren()){
-                        list.add(issue.getValue(ItemModel.class));
+                if (snapshot.exists()) {
+                    for (DataSnapshot issue : snapshot.getChildren()) {
+                        ItemModel item = issue.getValue(ItemModel.class);
+                        if (item != null) {
+                            list.add(item);
+                        }
                     }
                 }
-                if(!list.isEmpty()){
-                    binding.recyclerViewPopular.setLayoutManager(
-                            new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL,false)
+
+                if (!list.isEmpty()) {
+                    binding.rvPopular.setLayoutManager(
+                            new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false)
                     );
+
                     RecyclerView.Adapter adapter = new PopularAdapter(list);
-                    binding.recycleViewPopular.setAdapter(adapter);
-                    binding.progressBarPopular.setVisibility(View.GONE);
+                    binding.rvPopular.setAdapter(adapter);
                 }
             }
 
@@ -60,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-});
+        });
     }
 
     private void initCategory() {
-        database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Categories");
         ArrayList<Category> list = new ArrayList<>();
 
@@ -73,12 +83,18 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot issue : snapshot.getChildren()) {
-                        list.add(issue.getValue(Category.class));
+                        Category category = issue.getValue(Category.class);
+                        if (category != null) {
+                            list.add(category);
+                        }
                     }
+
                     if (!list.isEmpty()) {
                         recyclerViewCategory = findViewById(R.id.rvCategories);
-                        recyclerViewCategory.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
+                        recyclerViewCategory.setLayoutManager(
+                                new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false)
+                        );
 
                         adapterCategory = new CategoryAdapter(list);
                         recyclerViewCategory.setAdapter(adapterCategory);
@@ -87,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 }

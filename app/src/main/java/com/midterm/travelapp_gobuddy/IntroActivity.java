@@ -20,9 +20,12 @@ public class IntroActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+
+                // 🔥 CHUYỂN SANG LOGIN
+                Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
+
             }
         });
     }

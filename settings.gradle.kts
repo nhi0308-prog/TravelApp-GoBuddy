@@ -9,23 +9,20 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        maven {
-            url = uri("https://jitpack.io")
-        }
+        // ❌ KHÔNG cần jitpack ở đây
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://jitpack.io")
-        }
+
+        // ✅ ĐÚNG CHỖ
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "TravelApp-GoBuddy"
 include(":app")
-include(":app")
- 
