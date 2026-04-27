@@ -36,16 +36,15 @@ public class LoginActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance().getReference("users");
 
+        // 👁 SHOW / HIDE PASSWORD
         btnEye.setOnClickListener(v -> {
 
             if (isShow) {
-                // 🔒 Ẩn
                 edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 btnEye.setImageResource(R.drawable.ic_eye);
                 isShow = false;
 
             } else {
-                // 👁 Hiện
                 edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 btnEye.setImageResource(R.drawable.ic_eyeon);
                 isShow = true;
@@ -76,9 +75,14 @@ public class LoginActivity extends AppCompatActivity {
                                     String dbPass = data.child("password").getValue(String.class);
 
                                     if (dbPass != null && dbPass.equals(pass)) {
+
+                                        String name = data.child("name").getValue(String.class); // 👈 NEW
+
                                         Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
 
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("USERNAME", name); // 👈 NEW
+                                        startActivity(intent);
                                         finish();
                                         return;
                                     }
