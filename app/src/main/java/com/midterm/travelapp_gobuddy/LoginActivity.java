@@ -8,6 +8,8 @@ import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// 👉 THÊM THƯ VIỆN NÀY
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
 public class LoginActivity extends AppCompatActivity {
@@ -20,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     boolean isShow = false;
 
     DatabaseReference database;
+    FirebaseAuth mAuth; // 👉 THÊM KHAI BÁO NÀY
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         txtForgot = findViewById(R.id.txtForgot);
 
         database = FirebaseDatabase.getInstance().getReference("users");
+        mAuth = FirebaseAuth.getInstance(); // 👉 KHỞI TẠO MAUTH
 
         // 👁 SHOW / HIDE PASSWORD
         btnEye.setOnClickListener(v -> {
@@ -64,40 +68,53 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            database.orderByChild("email").equalTo(email)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
+            // 👉 BỌC HÀM AUTH BÊN NGOÀI ĐỂ KIỂM TRA TRƯỚC
+            mAuth.signInWithEmailAndPassword(email, pass)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
 
-                            if (snapshot.exists()) {
+                            // 👇 BÊN TRONG LÀ GIỮ NGUYÊN Y HỆT CODE CŨ CỦA BẠN
+                            database.orderByChild("email").equalTo(email)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot snapshot) {
 
-                                for (DataSnapshot data : snapshot.getChildren()) {
-                                    String dbPass = data.child("password").getValue(String.class);
+                                            if (snapshot.exists()) {
 
-                                    if (dbPass != null && dbPass.equals(pass)) {
+                                                for (DataSnapshot data : snapshot.getChildren()) {
+                                                    String dbPass = data.child("password").getValue(String.class);
 
-                                        String name = data.child("name").getValue(String.class); // 👈 NEW
+                                                    if (dbPass != null && dbPass.equals(pass)) {
 
-                                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
+                                                        String name = data.child("name").getValue(String.class); // 👈 NEW
 
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("USERNAME", name); // 👈 NEW
-                                        startActivity(intent);
-                                        finish();
-                                        return;
-                                    }
-                                }
+                                                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
 
-                                Toast.makeText(LoginActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                        intent.putExtra("USERNAME", name); // 👈 NEW
+                                                        startActivity(intent);
+                                                        finish();
+                                                        return;
+                                                    }
+                                                }
 
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Account not found", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                                                Toast.makeText(LoginActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
 
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            Toast.makeText(LoginActivity.this, "Firebase error", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(LoginActivity.this, "Account not found", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError error) {
+                                            Toast.makeText(LoginActivity.this, "Firebase error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            // 👆 KẾT THÚC CODE CŨ CỦA BẠN
+
+                        } else {
+                            // Báo lỗi nếu Firebase Auth thất bại
+                            Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
