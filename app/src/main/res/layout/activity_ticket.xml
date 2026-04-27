@@ -87,14 +87,14 @@
                     android:layout_height="130dp"
                     android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/roundedCorner"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    tools:srcCompat="@drawable/cu_rng___nng_ivivu" />
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Title"
+                    android:text="Đà Nẵng Dragon Odyssey"
                     android:textColor="@color/darkBlue"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -115,11 +115,11 @@
                     android:orientation="horizontal">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tour Guide" android:textSize="12sp" />
-                        <TextView android:id="@+id/txtGuideNameTop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Name" android:textStyle="bold" android:textColor="@color/darkBlue" />
+                        <TextView android:id="@+id/txtGuideNameTop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Emily Waston" android:textStyle="bold" android:textColor="@color/darkBlue" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time" android:textSize="12sp" />
-                        <TextView android:id="@+id/txtTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00" android:textStyle="bold" android:textColor="@color/darkBlue" />
+                        <TextView android:id="@+id/txtTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="08:00" android:textStyle="bold" android:textColor="@color/darkBlue" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -130,11 +130,11 @@
                     android:orientation="horizontal">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Trip Duration" android:textSize="12sp" />
-                        <TextView android:id="@+id/txtDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-" android:textStyle="bold" android:textColor="@color/darkBlue" />
+                        <TextView android:id="@+id/txtDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2 days" android:textStyle="bold" android:textColor="@color/darkBlue" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Guest" android:textSize="12sp" />
-                        <TextView android:id="@+id/txtGuest" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textStyle="bold" android:textColor="@color/darkBlue" />
+                        <TextView android:id="@+id/txtGuest" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15" android:textStyle="bold" android:textColor="@color/darkBlue" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -177,7 +177,7 @@
                             android:id="@+id/txtGuideNameFinal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Name"
+                            android:text="Emily Waston"
                             android:textColor="@color/darkBlue"
                             android:textStyle="bold"
                             android:textSize="12sp" />
@@ -234,7 +234,7 @@
                     android:text="Download Ticket"
                     android:textAllCaps="false"
                     android:textSize="16sp"
-                    android:backgroundTint="@android:color/holo_purple"
+                    android:backgroundTint="@android:color/holo_blue_bright"
                     app:cornerRadius="30dp" />
 
             </LinearLayout>
