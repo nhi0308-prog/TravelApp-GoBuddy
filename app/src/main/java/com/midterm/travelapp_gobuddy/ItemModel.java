@@ -22,6 +22,9 @@ public class ItemModel implements Serializable {
     private String guideName;
     private int totalGuest;
 
+    // Thêm biến số điện thoại để sửa lỗi đỏ bên TicketActivity
+    private String tourGuidePhone;
+
     // Constructor rỗng
     public ItemModel() {
     }
@@ -82,4 +85,7 @@ public class ItemModel implements Serializable {
 
     public String getTime() { return timeTour; }
 
+    // Hàm Getter/Setter cho số điện thoại
+    public String getTourGuidePhone() { return tourGuidePhone; }
+    public void setTourGuidePhone(String tourGuidePhone) { this.tourGuidePhone = tourGuidePhone; }
 }
