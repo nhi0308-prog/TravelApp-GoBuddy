@@ -1,6 +1,7 @@
 package com.midterm.travelapp_gobuddy;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,7 +45,9 @@ private  ItemModel object;
         binding.btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
+                intent.putExtra("object", object);
+                startActivity(intent);
             }
         });
     }
