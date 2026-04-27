@@ -6,4 +6,8 @@
     <color name="darkGrey">#707070</color>
     <color name="darkBlue">#253f66</color>
     <color name="lightGray">#efefef</color>
+
+    <color name="text_main_color">#253f66</color>
+    <color name="start_button_bg">#4DFFFFFF</color>
+    <color name="button_stroke">#80FFFFFF</color>
 </resources>
