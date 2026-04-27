@@ -61,11 +61,11 @@ public class ItemModel implements Serializable {
     public void setPic(ArrayList<String> pic) { this.pic = pic; }
 
     // Hàm lấy ảnh đầu tiên cho Glide
-    public String getPic() {
-        if (pic != null && !pic.isEmpty()) {
-            return pic.get(0);
+    public ArrayList<String> getPic() {
+        if (pic != null) {
+            return pic;
         }
-        return "";
+        return new ArrayList<>();
     }
     public boolean isWifi() { return wifi; }
     public void setWifi(boolean wifi) { this.wifi = wifi; }
@@ -81,4 +81,5 @@ public class ItemModel implements Serializable {
     public void setTotalGuest(int totalGuest) { this.totalGuest = totalGuest; }
 
     public String getTime() { return timeTour; }
+
 }
