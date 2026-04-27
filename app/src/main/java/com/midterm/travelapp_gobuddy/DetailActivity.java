@@ -42,6 +42,7 @@ private  ItemModel object;
                 .load(object.getPic())
                 .into(binding.pic);
 
+
         binding.btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

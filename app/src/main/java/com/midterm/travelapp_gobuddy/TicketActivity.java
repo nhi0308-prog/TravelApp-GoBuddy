@@ -40,6 +40,7 @@ public class TicketActivity extends AppCompatActivity {
         binding.txtTime.setText(object.getTime());
         binding.txtGuest.setText(String.valueOf(object.getTotalGuest()));
 
+
         binding.btnChat.setOnClickListener(v -> {
             Intent sendIntent = new Intent(Intent.ACTION_VIEW);
             sendIntent.setData(Uri.parse("sms:" + object.getTourGuidePhone()));
