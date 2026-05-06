@@ -4,13 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-// 👉 THÊM THƯ VIỆN NÀY
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     boolean isShow = false;
 
     DatabaseReference database;
-    FirebaseAuth mAuth; // 👉 THÊM KHAI BÁO NÀY
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +41,22 @@ public class LoginActivity extends AppCompatActivity {
         btnEye = findViewById(R.id.btnEye);
         btnLogin = findViewById(R.id.btnLogin);
         txtGuest = findViewById(R.id.txtGuest);
-        txtSignup = findViewById(R.id.txtSignup);
+
+        // Dòng này đã sửa theo XML của bạn
+        txtSignup = findViewById(R.id.txtSignupBtn);
+
         txtForgot = findViewById(R.id.txtForgot);
 
         database = FirebaseDatabase.getInstance().getReference("users");
-        mAuth = FirebaseAuth.getInstance(); // 👉 KHỞI TẠO MAUTH
+        mAuth = FirebaseAuth.getInstance();
 
-        // 👁 SHOW / HIDE PASSWORD
+        // SHOW / HIDE PASSWORD
         btnEye.setOnClickListener(v -> {
 
             if (isShow) {
                 edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 btnEye.setImageResource(R.drawable.ic_eye);
                 isShow = false;
-
             } else {
                 edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 btnEye.setImageResource(R.drawable.ic_eyeon);
@@ -57,23 +66,21 @@ public class LoginActivity extends AppCompatActivity {
             edtPassword.setSelection(edtPassword.getText().length());
         });
 
-        // 🔐 LOGIN
+        // LOGIN
         btnLogin.setOnClickListener(v -> {
 
             String email = edtEmail.getText().toString().trim();
             String pass = edtPassword.getText().toString().trim();
 
             if (email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Nhập đầy đủ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Nhập đầy đủ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // 👉 BỌC HÀM AUTH BÊN NGOÀI ĐỂ KIỂM TRA TRƯỚC
             mAuth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
 
-                            // 👇 BÊN TRONG LÀ GIỮ NGUYÊN Y HỆT CODE CŨ CỦA BẠN
                             database.orderByChild("email").equalTo(email)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
@@ -86,12 +93,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                                     if (dbPass != null && dbPass.equals(pass)) {
 
-                                                        String name = data.child("name").getValue(String.class); // 👈 NEW
+                                                        String name = data.child("name").getValue(String.class);
 
                                                         Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_SHORT).show();
 
                                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                        intent.putExtra("USERNAME", name); // 👈 NEW
+                                                        intent.putExtra("USERNAME", name);
                                                         startActivity(intent);
                                                         finish();
                                                         return;
@@ -110,29 +117,29 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Firebase error", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                            // 👆 KẾT THÚC CODE CŨ CỦA BẠN
 
                         } else {
-                            // Báo lỗi nếu Firebase Auth thất bại
                             Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // 👤 Guest
+        // GUEST
         txtGuest.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
             finish();
         });
 
-        // 📝 Signup
+        // SIGN UP
         txtSignup.setOnClickListener(v -> {
-            Toast.makeText(this, "Chưa làm Register", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
 
-        // 🔄 Forgot
+        // FORGOT PASSWORD
         txtForgot.setOnClickListener(v -> {
-            Toast.makeText(this, "Chưa làm Forgot Password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Chưa làm Forgot Password", Toast.LENGTH_SHORT).show();
         });
     }
 }

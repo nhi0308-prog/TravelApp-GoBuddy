@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 🔥 INTERNET để dùng Firebase -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -15,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelAppGoBuddy">
 
-        <!-- 🚀 INTRO (màn hình đầu tiên) -->
+        <!-- 🚀 INTRO -->
         <activity
             android:name=".IntroActivity"
             android:exported="true">
@@ -26,9 +25,14 @@
             </intent-filter>
         </activity>
 
-        <!-- 🔐 LOGIN (THÊM MỚI) -->
+        <!-- 🔐 LOGIN -->
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- 📝 SIGN UP -->
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false" />
 
         <!-- 📱 MAIN -->
