@@ -132,11 +132,13 @@
                 android:layout_marginBottom="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"/>
+
             <!-- 4 ICON TRÒN -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,9 +149,12 @@
 
                 <!-- HOTEL -->
                 <LinearLayout
+                    android:id="@+id/layoutHotel"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
@@ -178,9 +183,12 @@
 
                 <!-- FLIGHT -->
                 <LinearLayout
+                    android:id="@+id/layoutFlight"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
@@ -209,9 +217,12 @@
 
                 <!-- PLACE -->
                 <LinearLayout
+                    android:id="@+id/layoutPlace"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
@@ -240,9 +251,12 @@
 
                 <!-- FOOD -->
                 <LinearLayout
+                    android:id="@+id/layoutFood"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
 
@@ -283,12 +297,15 @@
                 android:id="@+id/rvPopular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
             <ProgressBar
                 android:id="@+id/progressBarPopular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:visibility="gone"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

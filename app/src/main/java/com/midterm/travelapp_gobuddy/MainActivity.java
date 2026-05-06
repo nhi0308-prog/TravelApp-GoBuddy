@@ -1,5 +1,6 @@
 package com.midterm.travelapp_gobuddy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
-        // 👇 NEW: HIỂN THỊ TÊN USER
         TextView txtHello = findViewById(R.id.txtHello);
         String name = getIntent().getStringExtra("USERNAME");
 
@@ -38,8 +38,26 @@ public class MainActivity extends AppCompatActivity {
             txtHello.setText("Hi, " + name);
         }
 
+
+        setCategoryButtonClick();
+
         initCategory();
         initPopular();
+    }
+
+
+    private void setCategoryButtonClick() {
+        binding.layoutHotel.setOnClickListener(v -> openCategory("Hotel"));
+        binding.layoutFlight.setOnClickListener(v -> openCategory("Flight"));
+        binding.layoutPlace.setOnClickListener(v -> openCategory("Place"));
+        binding.layoutFood.setOnClickListener(v -> openCategory("Food"));
+    }
+
+
+    private void openCategory(String categoryName) {
+        Intent intent = new Intent(MainActivity.this, CategoryDetailActivity.class);
+        intent.putExtra("category_name", categoryName);
+        startActivity(intent);
     }
 
     private void initPopular() {
@@ -64,10 +82,16 @@ public class MainActivity extends AppCompatActivity {
                     );
                     binding.rvPopular.setAdapter(new PopularAdapter(list));
                 }
+
+
+                binding.progressBarPopular.setVisibility(View.GONE);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                binding.progressBarPopular.setVisibility(View.GONE);
+            }
         });
     }
 
