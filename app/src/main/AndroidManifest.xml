@@ -34,8 +34,11 @@
         <!-- 📝 SIGN UP -->
         <activity
             android:name=".SignUpActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false" />
-
         <!-- 📱 MAIN -->
         <activity
             android:name=".MainActivity"

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private ActivityMainBinding binding;
 
+    private FirebaseAuth mAuth;
+    private String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +35,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        binding.bottomMenu.setItemSelected(R.id.home, true);
 
         TextView txtHello = findViewById(R.id.txtHello);
-        String name = getIntent().getStringExtra("USERNAME");
+        TextView txtHomeAvatarLetter = findViewById(R.id.txtHomeAvatarLetter);
+
+        name = getIntent().getStringExtra("USERNAME");
 
         if (name != null && !name.isEmpty()) {
-            txtHello.setText("Hi, " + name);
+            txtHello.setText("Hi, " + name + " 👋");
+            setHomeAvatarLetter(txtHomeAvatarLetter, name);
+        } else {
+            loadUserName(txtHello, txtHomeAvatarLetter);
         }
 
+        binding.bottomMenu.setOnItemSelectedListener(id -> {
+            if (id == R.id.profile) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.home) {
+                binding.bottomMenu.setItemSelected(R.id.home, true);
+            }
+        });
 
         setCategoryButtonClick();
 
@@ -45,6 +66,69 @@ public class MainActivity extends AppCompatActivity {
         initPopular();
     }
 
+    private void loadUserName(TextView txtHello, TextView txtHomeAvatarLetter) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser == null) {
+            txtHello.setText("Hi, Guest 👋");
+            txtHomeAvatarLetter.setText("U");
+            return;
+        }
+
+        String userId = currentUser.getUid();
+
+        database.getReference("users").child(userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String firebaseName = snapshot.child("name").getValue(String.class);
+
+                        if (firebaseName == null || firebaseName.trim().isEmpty()) {
+                            String lastName = snapshot.child("lastName").getValue(String.class);
+                            String firstName = snapshot.child("firstName").getValue(String.class);
+
+                            if (lastName == null) lastName = "";
+                            if (firstName == null) firstName = "";
+
+                            firebaseName = (lastName + " " + firstName).trim();
+                        }
+
+                        if (firebaseName == null || firebaseName.trim().isEmpty()) {
+                            txtHello.setText("Hi, Guest 👋");
+                            txtHomeAvatarLetter.setText("U");
+                        } else {
+                            name = firebaseName;
+                            txtHello.setText("Hi, " + firebaseName + " 👋");
+                            setHomeAvatarLetter(txtHomeAvatarLetter, firebaseName);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        txtHello.setText("Hi, Guest 👋");
+                        txtHomeAvatarLetter.setText("U");
+                    }
+                });
+    }
+
+    private void setHomeAvatarLetter(TextView avatarTextView, String fullName) {
+        if (fullName == null || fullName.trim().isEmpty()) {
+            avatarTextView.setText("U");
+            return;
+        }
+
+        String[] parts = fullName.trim().split("\\s+");
+        String avatarText = "";
+
+        if (parts.length >= 2) {
+            avatarText = parts[0].substring(0, 1).toUpperCase()
+                    + parts[parts.length - 1].substring(0, 1).toUpperCase();
+        } else {
+            avatarText = parts[0].substring(0, 1).toUpperCase();
+        }
+
+        avatarTextView.setText(avatarText);
+    }
 
     private void setCategoryButtonClick() {
         binding.layoutHotel.setOnClickListener(v -> openCategory("Hotel"));
@@ -52,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
         binding.layoutPlace.setOnClickListener(v -> openCategory("Place"));
         binding.layoutFood.setOnClickListener(v -> openCategory("Food"));
     }
-
 
     private void openCategory(String categoryName) {
         Intent intent = new Intent(MainActivity.this, CategoryDetailActivity.class);
@@ -83,13 +166,11 @@ public class MainActivity extends AppCompatActivity {
                     binding.rvPopular.setAdapter(new PopularAdapter(list));
                 }
 
-
                 binding.progressBarPopular.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
                 binding.progressBarPopular.setVisibility(View.GONE);
             }
         });
