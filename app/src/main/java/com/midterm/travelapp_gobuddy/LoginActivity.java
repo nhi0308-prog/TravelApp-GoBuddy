@@ -41,10 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnEye = findViewById(R.id.btnEye);
         btnLogin = findViewById(R.id.btnLogin);
         txtGuest = findViewById(R.id.txtGuest);
-
-        // Dòng này đã sửa theo XML của bạn
         txtSignup = findViewById(R.id.txtSignupBtn);
-
         txtForgot = findViewById(R.id.txtForgot);
 
         database = FirebaseDatabase.getInstance().getReference("users");
@@ -99,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                         intent.putExtra("USERNAME", name);
+                                                        intent.putExtra("IS_GUEST", false);
                                                         startActivity(intent);
                                                         finish();
                                                         return;
@@ -126,7 +124,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // GUEST
         txtGuest.setOnClickListener(v -> {
+            mAuth.signOut();
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra("IS_GUEST", true);
             startActivity(intent);
             finish();
         });

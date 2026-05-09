@@ -240,6 +240,19 @@
 
                     </LinearLayout>
 
+                    <!-- ĐĂNG XUẤT -->
+                    <Button
+                        android:id="@+id/btnLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/bg_logout_button"
+                        android:text="Đăng xuất"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
             </LinearLayout>

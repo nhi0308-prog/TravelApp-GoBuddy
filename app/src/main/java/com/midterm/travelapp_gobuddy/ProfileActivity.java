@@ -2,6 +2,7 @@ package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView txtAvatarLetter;
     TextView txtProfileName, txtProfileEmail;
     TextView txtLastName, txtFirstName, txtBirthday, txtAddress, txtStatus;
+    Button btnLogout;
 
     FirebaseAuth mAuth;
     DatabaseReference database;
@@ -39,11 +41,23 @@ public class ProfileActivity extends AppCompatActivity {
         txtBirthday = findViewById(R.id.txtBirthday);
         txtAddress = findViewById(R.id.txtAddress);
         txtStatus = findViewById(R.id.txtStatus);
+        btnLogout = findViewById(R.id.btnLogout);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("users");
 
         loadUserInfo();
+
+        btnLogout.setOnClickListener(v -> {
+            mAuth.signOut();
+
+            Toast.makeText(ProfileActivity.this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
 
         ChipNavigationBar bottomMenu = findViewById(R.id.bottomMenu);
         bottomMenu.setItemSelected(R.id.profile, true);
@@ -71,6 +85,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (currentUser == null) {
             Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
             return;
         }
