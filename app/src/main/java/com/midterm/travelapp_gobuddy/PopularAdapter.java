@@ -1,6 +1,7 @@
 package com.midterm.travelapp_gobuddy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.viewholder> {
     ArrayList<ItemModel> items;
     Context context;
-    ViewholderPopularBinding binding;
-
 
     public PopularAdapter(ArrayList<ItemModel> items) {
         this.items = items;
@@ -26,29 +25,34 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.viewhold
     @NonNull
     @Override
     public PopularAdapter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = ViewholderPopularBinding.inflate(
+        ViewholderPopularBinding binding = ViewholderPopularBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false
         );
+
         context = parent.getContext();
+
         return new viewholder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PopularAdapter.viewholder holder, int position) {
-        binding.titleTxt.setText(items.get(position).getTitle());
-        binding.priceTxt.setText("$" + items.get(position).getPrice() + "/Night");
-        binding.addressTxt.setText(items.get(position).getAddress());
-        binding.scoreTxt.setText("" + items.get(position).getScore());
+        ItemModel item = items.get(position);
 
-        Glide.with(context)
-                .load(items.get(position).getPic().get(0))
-                .into(binding.pic);
+        holder.binding.titleTxt.setText(item.getTitle());
+        holder.binding.priceTxt.setText("$" + item.getPrice() + "/Night");
+        holder.binding.addressTxt.setText(item.getAddress());
+        holder.binding.scoreTxt.setText("" + item.getScore());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (item.getPic() != null && !item.getPic().isEmpty()) {
+            Glide.with(context)
+                    .load(item.getPic().get(0))
+                    .into(holder.binding.pic);
+        }
 
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("object", item);
+            context.startActivity(intent);
         });
     }
 
@@ -58,8 +62,11 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.viewhold
     }
 
     public class viewholder extends RecyclerView.ViewHolder {
+        ViewholderPopularBinding binding;
+
         public viewholder(ViewholderPopularBinding binding) {
             super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

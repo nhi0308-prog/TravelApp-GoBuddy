@@ -76,7 +76,7 @@ public class ItemModel implements Serializable {
     public boolean isGuide() { return guide; }
     public void setGuide(boolean guide) { this.guide = guide; }
 
-    // Các hàm mới thêm
+
     public String getGuideName() { return guideName; }
     public void setGuideName(String guideName) { this.guideName = guideName; }
 

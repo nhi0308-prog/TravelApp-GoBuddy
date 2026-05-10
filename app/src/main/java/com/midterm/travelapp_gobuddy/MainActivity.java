@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setCategoryButtonClick();
 
         initCategory();
-        // initPopular(); <--- Chú thích (tắt) cái cũ này đi nếu nó đang lỗi
-        initPlaceGo();
+        initPopular();
     }
 
 
@@ -124,40 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
-    private void initPlaceGo() {
-
-        DatabaseReference myref = database.getReference("Category/Popular");
-
-        binding.progressBarPopular.setVisibility(View.VISIBLE);
-        ArrayList<PlaceGoModel> listPlace = new ArrayList<>();
-
-        myref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot issue : snapshot.getChildren()) {
-                        PlaceGoModel item = issue.getValue(PlaceGoModel.class);
-                        if (item != null) listPlace.add(item);
-                    }
-                }
-
-                if (!listPlace.isEmpty()) {
-                    // Thiết lập hiển thị cho RecyclerView (rvPopular)
-                    binding.rvPopular.setLayoutManager(
-                            new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false)
-                    );
-                    // Dùng Adapter mới để có tính năng kích chọn hiện hình
-                    binding.rvPopular.setAdapter(new PlaceGoAdapter(listPlace));
-                }
-                binding.progressBarPopular.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                binding.progressBarPopular.setVisibility(View.GONE);
-            }
         });
     }
 }

@@ -35,17 +35,16 @@
                     android:gravity="center_vertical"
                     android:padding="16dp">
 
-                    <androidx.cardview.widget.CardView
+                    <TextView
+                        android:id="@+id/txtHomeAvatarLetter"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        app:cardCornerRadius="24dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/user_1"
-                            android:scaleType="centerCrop"/>
-                    </androidx.cardview.widget.CardView>
+                        android:background="@drawable/bg_profile_circle"
+                        android:gravity="center"
+                        android:text="U"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -55,22 +54,24 @@
 
                         <TextView
                             android:id="@+id/txtHello"
-                            android:text="Hi, Alex 👋"
+                            android:text="Hi, Guest 👋"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="#1A1A1A"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <TextView
                             android:text="Where to next?"
                             android:textSize="14sp"
                             android:textColor="#666"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
+
                     </LinearLayout>
 
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- SEARCH -->
@@ -94,24 +95,31 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/search_icon"
-                        app:tint="#999"/>
+                        app:tint="#999" />
 
                     <EditText
+                        android:id="@+id/edtSearch"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="Search destinations..."
-                        android:paddingStart="10dp"/>
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text" />
 
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSearch"
                         android:layout_width="70dp"
                         android:layout_height="40dp"
                         android:text="Go"
                         android:textColor="#fff"
                         android:textAllCaps="false"
-                        android:background="@drawable/btn_go_rounded"/>
+                        android:background="@drawable/btn_go_rounded" />
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- TITLE -->
@@ -122,7 +130,7 @@
                 android:textColor="#1F1D4A"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <!-- CATEGORY -->
             <TextView
@@ -131,13 +139,13 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp" />
 
             <!-- 4 ICON TRÒN -->
             <LinearLayout
@@ -168,7 +176,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_hotel"/>
+                            android:src="@drawable/ic_hotel" />
+
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -178,7 +187,8 @@
                         android:text="Hotel"
                         android:textSize="12sp"
                         android:textColor="#333333"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <!-- FLIGHT -->
@@ -202,7 +212,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_flight"/>
+                            android:src="@drawable/ic_flight" />
+
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -212,7 +223,8 @@
                         android:text="Flight"
                         android:textSize="12sp"
                         android:textColor="#333333"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <!-- PLACE -->
@@ -236,7 +248,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_place"/>
+                            android:src="@drawable/ic_place" />
+
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -246,7 +259,8 @@
                         android:text="Place"
                         android:textSize="12sp"
                         android:textColor="#333333"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <!-- FOOD -->
@@ -270,7 +284,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_food"/>
+                            android:src="@drawable/ic_food" />
+
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -280,7 +295,8 @@
                         android:text="Food"
                         android:textSize="12sp"
                         android:textColor="#333333"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -291,12 +307,12 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPopular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <ProgressBar
                 android:id="@+id/progressBarPopular"
@@ -304,9 +320,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <!-- BOTTOM NAV -->
@@ -316,6 +333,6 @@
         android:layout_height="65dp"
         android:background="#FFFFFF"
         app:cnb_menuResource="@menu/bottom_menu"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
