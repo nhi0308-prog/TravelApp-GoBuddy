@@ -2,6 +2,8 @@ package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private ActivityMainBinding binding;
 
+    // biến cho search
+    private ArrayList<ItemModel> allPlaceList = new ArrayList<>();
+    private ArrayList<ItemModel> searchResultList = new ArrayList<>();
+    private PopularAdapter searchAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +45,120 @@ public class MainActivity extends AppCompatActivity {
             txtHello.setText("Hi, " + name);
         }
 
-
         setCategoryButtonClick();
 
         initCategory();
         initPopular();
+
+        // gọi search
+        initSearch();
+        loadPlacesForSearch();
     }
 
+    // setup RecyclerView kết quả search
+    private void initSearch() {
+        searchAdapter = new PopularAdapter(searchResultList);
+
+        binding.rvSearchResults.setLayoutManager(
+                new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false)
+        );
+        binding.rvSearchResults.setAdapter(searchAdapter);
+
+        binding.txtSearchResultTitle.setVisibility(View.GONE);
+        binding.rvSearchResults.setVisibility(View.GONE);
+
+        binding.btnSearch.setOnClickListener(v -> {
+            String keyword = binding.edtSearch.getText().toString().trim();
+            filterPlaces(keyword);
+        });
+
+        binding.edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterPlaces(s.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    // load địa điểm từ Firebase để search
+    private void loadPlacesForSearch() {
+        DatabaseReference myRef = database.getReference("Popular");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allPlaceList.clear();
+
+                if (snapshot.exists()) {
+                    for (DataSnapshot issue : snapshot.getChildren()) {
+                        ItemModel item = issue.getValue(ItemModel.class);
+
+                        if (item != null) {
+                            allPlaceList.add(item);
+                        }
+                    }
+                }
+
+                String currentKeyword = binding.edtSearch.getText().toString().trim();
+                if (!currentKeyword.isEmpty()) {
+                    filterPlaces(currentKeyword);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    // lọc địa điểm theo title, address, description
+    private void filterPlaces(String keyword) {
+        searchResultList.clear();
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            binding.txtSearchResultTitle.setVisibility(View.GONE);
+            binding.rvSearchResults.setVisibility(View.GONE);
+            searchAdapter.notifyDataSetChanged();
+            return;
+        }
+
+        String searchText = keyword.toLowerCase().trim();
+
+        for (ItemModel item : allPlaceList) {
+            String title = item.getTitle() != null ? item.getTitle().toLowerCase() : "";
+            String address = item.getAddress() != null ? item.getAddress().toLowerCase() : "";
+            String description = item.getDescription() != null ? item.getDescription().toLowerCase() : "";
+            String duration = item.getDuration() != null ? item.getDuration().toLowerCase() : "";
+            String distance = item.getDistance() != null ? item.getDistance().toLowerCase() : "";
+
+            if (title.contains(searchText)
+                    || address.contains(searchText)
+                    || description.contains(searchText)
+                    || duration.contains(searchText)
+                    || distance.contains(searchText)) {
+                searchResultList.add(item);
+            }
+        }
+
+        binding.txtSearchResultTitle.setVisibility(View.VISIBLE);
+        binding.rvSearchResults.setVisibility(View.VISIBLE);
+
+        if (searchResultList.isEmpty()) {
+            binding.txtSearchResultTitle.setText("No results found");
+        } else {
+            binding.txtSearchResultTitle.setText("Search results");
+        }
+
+        searchAdapter.notifyDataSetChanged();
+    }
 
     private void setCategoryButtonClick() {
         binding.layoutHotel.setOnClickListener(v -> openCategory("Hotel"));
@@ -52,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
         binding.layoutPlace.setOnClickListener(v -> openCategory("Place"));
         binding.layoutFood.setOnClickListener(v -> openCategory("Food"));
     }
-
 
     private void openCategory(String categoryName) {
         Intent intent = new Intent(MainActivity.this, CategoryDetailActivity.class);
@@ -83,13 +196,11 @@ public class MainActivity extends AppCompatActivity {
                     binding.rvPopular.setAdapter(new PopularAdapter(list));
                 }
 
-
                 binding.progressBarPopular.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
                 binding.progressBarPopular.setVisibility(View.GONE);
             }
         });

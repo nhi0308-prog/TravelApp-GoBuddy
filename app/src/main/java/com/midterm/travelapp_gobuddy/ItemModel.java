@@ -18,74 +18,210 @@ public class ItemModel implements Serializable {
     private boolean wifi;
     private boolean guide;
 
-    // Thêm 2 biến này vào đây (nằm ngoài các hàm)
     private String guideName;
     private int totalGuest;
-
-    // Thêm biến số điện thoại để sửa lỗi đỏ bên TicketActivity
     private String tourGuidePhone;
 
-    // Constructor rỗng
+    // để đọc dữ liệu kiểu Id, Name, ImagePath từ Firebase
+    private int Id;
+    private String Name;
+    private String ImagePath;
+
     public ItemModel() {
     }
 
-    // Các hàm Getter và Setter
-    public String getTimeTour() { return timeTour; }
-    public void setTimeTour(String timeTour) { this.timeTour = timeTour; }
+    public String getTimeTour() {
+        return timeTour;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setTimeTour(String timeTour) {
+        this.timeTour = timeTour;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getDuration() { return duration; }
-    public void setDuration(String duration) { this.duration = duration; }
+    // lấy tên hiển thị, ưu tiên title, nếu không có thì lấy Name
+    public String getDisplayTitle() {
+        if (title != null && !title.isEmpty()) {
+            return title;
+        }
+        if (Name != null && !Name.isEmpty()) {
+            return Name;
+        }
+        return "No title";
+    }
 
-    public String getDateTour() { return dateTour; }
-    public void setDateTour(String dateTour) { this.dateTour = dateTour; }
+    public String getAddress() {
+        return address;
+    }
 
-    public int getPrice() { return price; }
-    public void setPrice(int price) { this.price = price; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public int getBed() { return bed; }
-    public void setBed(int bed) { this.bed = bed; }
+    // lấy địa chỉ hiển thị
+    public String getDisplayAddress() {
+        if (address != null && !address.isEmpty()) {
+            return address;
+        }
+        return "No address";
+    }
 
-    public String getDistance() { return distance; }
-    public void setDistance(String distance) { this.distance = distance; }
+    public String getDescription() {
+        return description;
+    }
 
-    public double getScore() { return score; }
-    public void setScore(double score) { this.score = score; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public ArrayList<String> getPicList() { return pic; }
-    public void setPic(ArrayList<String> pic) { this.pic = pic; }
+    public String getDuration() {
+        return duration;
+    }
 
-    // Hàm lấy ảnh đầu tiên cho Glide
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getDateTour() {
+        return dateTour;
+    }
+
+    public void setDateTour(String dateTour) {
+        this.dateTour = dateTour;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getBed() {
+        return bed;
+    }
+
+    public void setBed(int bed) {
+        this.bed = bed;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public ArrayList<String> getPicList() {
+        return pic;
+    }
+
+    public void setPic(ArrayList<String> pic) {
+        this.pic = pic;
+    }
+
     public ArrayList<String> getPic() {
         if (pic != null) {
             return pic;
         }
         return new ArrayList<>();
     }
-    public boolean isWifi() { return wifi; }
-    public void setWifi(boolean wifi) { this.wifi = wifi; }
 
-    public boolean isGuide() { return guide; }
-    public void setGuide(boolean guide) { this.guide = guide; }
+    //  lấy link ảnh đầu tiên, ưu tiên pic[0], nếu không có thì lấy ImagePath
+    public String getDisplayImage() {
+        if (pic != null && !pic.isEmpty()) {
+            return pic.get(0);
+        }
+        if (ImagePath != null && !ImagePath.isEmpty()) {
+            return ImagePath;
+        }
+        return "";
+    }
 
+    public boolean isWifi() {
+        return wifi;
+    }
 
-    public String getGuideName() { return guideName; }
-    public void setGuideName(String guideName) { this.guideName = guideName; }
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
 
-    public int getTotalGuest() { return totalGuest; }
-    public void setTotalGuest(int totalGuest) { this.totalGuest = totalGuest; }
+    public boolean isGuide() {
+        return guide;
+    }
 
-    public String getTime() { return timeTour; }
+    public void setGuide(boolean guide) {
+        this.guide = guide;
+    }
 
-    // Hàm Getter/Setter cho số điện thoại
-    public String getTourGuidePhone() { return tourGuidePhone; }
-    public void setTourGuidePhone(String tourGuidePhone) { this.tourGuidePhone = tourGuidePhone; }
+    public String getGuideName() {
+        return guideName;
+    }
+
+    public void setGuideName(String guideName) {
+        this.guideName = guideName;
+    }
+
+    public int getTotalGuest() {
+        return totalGuest;
+    }
+
+    public void setTotalGuest(int totalGuest) {
+        this.totalGuest = totalGuest;
+    }
+
+    public String getTime() {
+        return timeTour;
+    }
+
+    public String getTourGuidePhone() {
+        return tourGuidePhone;
+    }
+
+    public void setTourGuidePhone(String tourGuidePhone) {
+        this.tourGuidePhone = tourGuidePhone;
+    }
+
+    // getter/setter cho Id, Name, ImagePath
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getImagePath() {
+        return ImagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        ImagePath = imagePath;
+    }
 }
