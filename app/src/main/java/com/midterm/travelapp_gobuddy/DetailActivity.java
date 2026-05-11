@@ -20,7 +20,6 @@ public class DetailActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         getIntentExtra();
         setVariable();
     }
@@ -87,6 +86,10 @@ public class DetailActivity extends AppCompatActivity {
 
         // --- 3. NÚT ĐẶT VÉ ---
         binding.btnBook.setOnClickListener(view -> {
+            object.setGuideName("Emily Waston");
+            object.setTimeTour("08:30 AM");
+            object.setDuration("3 Days ");
+            object.setTotalGuest(2);
             Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
             intent.putExtra("object", object);
             startActivity(intent);
