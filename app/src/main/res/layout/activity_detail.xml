@@ -68,6 +68,8 @@
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="12dp"
                     android:scrollbars="none"
+                    android:fillViewport="true"
+                    android:overScrollMode="never"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -75,39 +77,43 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp">
 
                         <ImageView
                             android:id="@+id/thumb1"
-                            android:layout_width="62dp"
-                            android:layout_height="46dp"
-                            android:layout_marginEnd="6dp"
+                            android:layout_width="65dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="4dp"
                             android:background="@drawable/thumb_bg"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/thumb_1" />
 
                         <ImageView
                             android:id="@+id/thumb2"
-                            android:layout_width="62dp"
-                            android:layout_height="46dp"
-                            android:layout_marginEnd="6dp"
+                            android:layout_width="65dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="4dp"
                             android:background="@drawable/thumb_bg"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/thumb_2" />
 
                         <ImageView
                             android:id="@+id/thumb3"
-                            android:layout_width="62dp"
-                            android:layout_height="46dp"
-                            android:layout_marginEnd="6dp"
+                            android:layout_width="65dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="4dp"
                             android:background="@drawable/thumb_bg"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/thumb_3" />
 
                         <ImageView
                             android:id="@+id/thumb4"
-                            android:layout_width="62dp"
-                            android:layout_height="46dp"
+                            android:layout_width="65dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="4dp"
                             android:background="@drawable/thumb_bg"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/thumb_4" />
@@ -341,6 +347,8 @@
                     android:textStyle="bold" />
 
                 <!-- Key Amenities Description -->
+
+                <!-- Price + Book Button Row -->
                 <TextView
                     android:id="@+id/descriptionTxt"
                     android:layout_width="match_parent"
@@ -351,7 +359,6 @@
                     android:textColor="#555555"
                     android:textSize="14sp" />
 
-                <!-- Price + Book Button Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

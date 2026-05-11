@@ -15,6 +15,7 @@ public class ItemModel implements Serializable {
     private String distance;
     private double score;
     private ArrayList<String> pic;
+    private ArrayList<String> pics;
     private boolean wifi;
     private boolean guide;
 
@@ -26,6 +27,7 @@ public class ItemModel implements Serializable {
     private int Id;
     private String Name;
     private String ImagePath;
+
 
     public ItemModel() {
     }
@@ -55,6 +57,9 @@ public class ItemModel implements Serializable {
             return Name;
         }
         return "No title";
+    }
+    public ArrayList<String> getPics() {
+        return pics;
     }
 
     public String getAddress() {
@@ -221,7 +226,9 @@ public class ItemModel implements Serializable {
         return ImagePath;
     }
 
+
     public void setImagePath(String imagePath) {
         ImagePath = imagePath;
     }
+
 }
