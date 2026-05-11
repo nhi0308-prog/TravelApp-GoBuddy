@@ -24,12 +24,35 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     private void setVariable() {
+        String imageUri = "";
+
+        // 1. Kiểm tra mảng Pics
+        if (object.getPics() != null && !object.getPics().isEmpty()) {
+            imageUri = object.getPics().get(0);
+        }
+        // 2. Nếu không có, kiểm tra ImagePath
+        else if (object.getImagePath() != null) {
+            imageUri = object.getImagePath();
+        }
+
+        // 3. SỬA LỖI Ở ĐÂY: Kiểm tra getPic() nếu nó cũng là một danh sách
+        if (imageUri == null || imageUri.isEmpty()) {
+            if (object.getPic() != null && !object.getPic().isEmpty()) {
+                // Lấy phần tử đầu tiên của ArrayList từ getPic()
+                imageUri = object.getPic().get(0);
+            }
+        }
+
         Glide.with(TicketActivity.this)
-                .load(object.getPic())
+                .load(imageUri)
                 .into(binding.imageView6);
+
         Glide.with(TicketActivity.this)
-                .load(object.getPic())
+                .load(imageUri) // Sử dụng biến imageUri đã kiểm tra
                 .into(binding.imageView6);
+
+        // ... các dòng code setText bên dưới giữ nguyên
+
 
         binding.imageView9.setOnClickListener(v -> finish());
 
