@@ -60,7 +60,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
         }
 
         // Price
-        holder.binding.priceTxt.setText("$" + item.getPrice() + "/Night");
+        holder.binding.priceTxt.setText("$" + item.getPrice() + "/Tour");
 
         // Score
         holder.binding.scoreTxt.setText(String.valueOf(item.getScore()));
