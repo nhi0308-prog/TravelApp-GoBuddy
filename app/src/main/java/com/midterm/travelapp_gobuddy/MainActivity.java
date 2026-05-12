@@ -53,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
         // gọi search
         initSearch();
         loadPlacesForSearch();
+
+        // bấm nút Profile ở bottom menu thì chuyển qua ProfileActivity
+        binding.bottomMenu.setOnItemSelectedListener(id -> {
+            if (id == R.id.profile) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // setup RecyclerView kết quả search
