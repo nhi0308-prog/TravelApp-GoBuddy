@@ -2,11 +2,16 @@ package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.midterm.travelapp_gobuddy.databinding.ActivityDetailBinding;
 import java.util.ArrayList;
 
@@ -77,21 +82,21 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         // ====================================================================
-        // --- 3. CẬP NHẬT MỚI: XỬ LÝ CHỌN THÔNG TIN ĐẶT VÉ ĐỘNG ---
+        // --- 3. CẬP NHẬT: XỬ LÝ CHỌN THÔNG TIN ĐẶT VÉ ĐỘNG ---
         // ====================================================================
 
         // Khởi tạo các mảng lưu giá trị (Dùng mảng 1 phần tử để tránh lỗi khi gọi trong Lambda)
-        final int[] guestCount = {2}; // Số lượng khách mặc định khởi tạo bằng 2 giống XML cũ của bạn
+        final int[] guestCount = {2}; // Số lượng khách mặc định khởi tạo bằng 2 giống XML
         final String[] selectedTime = {"08:30 AM"}; // Thời gian mặc định
 
         // Thiết lập số lượng khách ban đầu lên TextView
         binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
 
-        // Hiển thị thời gian Trip Duration từ Firebase (Nếu Firebase trống thì để mặc định 3 Days)
+        // Hiển thị thời gian Trip Duration từ Firebase (Nếu Firebase trống thì hiển thị Chưa cập nhật)
         if (object.getDuration() != null && !object.getDuration().isEmpty()) {
             binding.txtDurationDetail.setText(object.getDuration());
         } else {
-            binding.txtDurationDetail.setText("3 Days");
+            binding.txtDurationDetail.setText("Chưa cập nhật");
         }
 
         // Sự kiện click nút giảm số lượng khách [-]
@@ -122,31 +127,73 @@ public class DetailActivity extends AppCompatActivity {
             timePickerDialog.show();
         });
 
-        // Khởi tạo danh sách mảng dữ liệu Hướng dẫn viên
-        String[] guideNames = {"Emily Waston", "David Beckham", "Sumire", "Alex Ferguson"};
-        String[] guidePhones = {"0905123456", "0914999999", "0935888888", "0888777666"};
+        // --- ĐỌC DANH SÁCH TOUR GUIDE ĐỘNG TỪ NODE "Guides" TRÊN FIREBASE ---
+        ArrayList<String> guideNames = new ArrayList<>();
+        ArrayList<String> guidePhones = new ArrayList<>();
 
-        // Đổ danh sách hướng dẫn viên vào Spinner thả xuống
-        android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(this,
+        // Tạo Adapter cho Spinner (lúc này mảng guideNames đang rỗng)
+        android.widget.ArrayAdapter<String> spinnerAdapter = new android.widget.ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, guideNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerGuides.setAdapter(adapter);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerGuides.setAdapter(spinnerAdapter);
+
+        // Lắng nghe dữ liệu từ node "Guides" trên Firebase Realtime Database
+        FirebaseDatabase.getInstance().getReference("Guides")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        guideNames.clear();
+                        guidePhones.clear();
+
+                        // Duyệt qua từng guide_01, guide_02,... để lấy thông tin
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            ItemModel guideObject = data.getValue(ItemModel.class);
+                            if (guideObject != null) {
+                                guideNames.add(guideObject.getGuideName());
+                                guidePhones.add(guideObject.getTourGuidePhone());
+                            }
+                        }
+
+                        // Nếu lỡ Firebase trống, add dữ liệu mẫu để app không bị crash
+                        if (guideNames.isEmpty()) {
+                            guideNames.add("Emily Waston");
+                            guidePhones.add("0905123456");
+                        }
+
+                        // Cập nhật lại Spinner để hiển thị tên vừa load từ Firebase lên màn hình
+                        spinnerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.e("FirebaseError", error.getMessage());
+                    }
+                });
 
         // ====================================================================
-        // --- 4. CẬP NHẬT MỚI: ĐÓNG GÓI VÀ CHUYỂN DỮ LIỆU SANG TICKET ---
+        // --- 4. CẬP NHẬT: ĐÓNG GÓI VÀ CHUYỂN DỮ LIỆU ĐÃ CHỌN SANG TICKET ---
         // ====================================================================
         binding.btnBook.setOnClickListener(view -> {
-            // Lấy vị trí hướng dẫn viên đang được lựa chọn trên Spinner
-            int selectedIndex = binding.spinnerGuides.getSelectedItemPosition();
+            // Đảm bảo danh sách hướng dẫn viên đã tải xong từ Firebase
+            if (!guideNames.isEmpty()) {
+                // Lấy vị trí index người dùng đang chọn trên Spinner
+                int selectedIndex = binding.spinnerGuides.getSelectedItemPosition();
 
-            // Set ngược các giá trị đã chọn vào trong "object" trước khi gửi đi
-            object.setGuideName(guideNames[selectedIndex]);
-            object.setTourGuidePhone(guidePhones[selectedIndex]);
+                // Lấy đúng tên và số điện thoại của Hướng dẫn viên được chọn gán vào object
+                object.setGuideName(guideNames.get(selectedIndex));
+                object.setTourGuidePhone(guidePhones.get(selectedIndex));
+            } else {
+                // Giá trị phòng hờ nếu mạng quá yếu chưa load xong
+                object.setGuideName("Emily Waston");
+                object.setTourGuidePhone("0905123456");
+            }
+
+            // Gán các thông tin thời gian, số khách, thời lượng tour vào object
             object.setTimeTour(selectedTime[0]);
             object.setTotalGuest(guestCount[0]);
             object.setDuration(binding.txtDurationDetail.getText().toString());
 
-            // Thực hiện Intent chuyển tiếp sang màn hình TicketActivity
+            // Thực hiện Intent chuyển tiếp sang màn hình TicketActivity cùng gói dữ liệu động
             Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
             intent.putExtra("object", object);
             startActivity(intent);
