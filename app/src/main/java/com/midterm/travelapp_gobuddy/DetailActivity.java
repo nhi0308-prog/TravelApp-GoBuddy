@@ -188,8 +188,6 @@ public class DetailActivity extends AppCompatActivity {
                 object.setTourGuidePhone("0905123456");
             }
 
-
-
             // Gán các thông tin thời gian, số khách, thời lượng tour vào object
             object.setTimeTour(selectedTime[0]);
             object.setTotalGuest(guestCount[0]);
