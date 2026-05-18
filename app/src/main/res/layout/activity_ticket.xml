@@ -71,7 +71,7 @@
                         android:textSize="12sp"
                         android:textStyle="bold" />
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/txtOrderId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -248,14 +248,17 @@
                     android:layout_height="100dp"
                     android:layout_marginBottom="10dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/barcodee_removebg_preview" /> <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="321654687"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:layout_marginBottom="20dp"/>
+                    app:srcCompat="@drawable/barcodee_removebg_preview" />
+
+                <TextView
+                    android:id="@+id/textViewBarcodeNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="321654687"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="20dp"/>
 
                 <Button
                     android:id="@+id/btnDownload"
