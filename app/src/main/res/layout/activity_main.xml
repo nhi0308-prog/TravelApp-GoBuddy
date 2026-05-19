@@ -9,7 +9,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="90dp"
+        android:paddingBottom="8dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomMenu">
 
@@ -131,6 +132,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/txtSearchResultTitle"
                 android:layout_width="wrap_content"
@@ -147,6 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:nestedScrollingEnabled="false"
                 android:visibility="gone" />
 
             <!-- CATEGORY -->
@@ -162,7 +165,8 @@
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                android:nestedScrollingEnabled="false" />
 
             <!-- 4 ICON TRÒN -->
             <LinearLayout
@@ -329,7 +333,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPopular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
 
             <ProgressBar
                 android:id="@+id/progressBarPopular"
