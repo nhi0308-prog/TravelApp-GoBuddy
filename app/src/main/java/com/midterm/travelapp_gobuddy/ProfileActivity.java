@@ -74,6 +74,10 @@ public class ProfileActivity extends AppCompatActivity {
             } else if (id == R.id.bookmark) {
                 Toast.makeText(ProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(ProfileActivity.this, FavoriteActivity.class);
+                startActivity(intent);
+                finish();
+
             } else if (id == R.id.profile) {
                 // Đang ở trang Profile nên không làm gì
             }
