@@ -10,9 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPassword;
     ImageView btnEye;
+    ImageView btnGoogle, btnFacebook;
     Button btnLogin;
     TextView txtGuest, txtSignup, txtForgot;
 
@@ -30,6 +40,26 @@ public class LoginActivity extends AppCompatActivity {
 
     DatabaseReference database;
     FirebaseAuth mAuth;
+    GoogleSignInClient googleSignInClient;
+
+    private final ActivityResultLauncher<Intent> googleSignInLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        Intent data = result.getData();
+
+                        try {
+                            GoogleSignInAccount account =
+                                    GoogleSignIn.getSignedInAccountFromIntent(data)
+                                            .getResult(ApiException.class);
+
+                            firebaseAuthWithGoogle(account.getIdToken());
+
+                        } catch (ApiException e) {
+                            Toast.makeText(LoginActivity.this, "Google login failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +74,18 @@ public class LoginActivity extends AppCompatActivity {
         txtSignup = findViewById(R.id.txtSignupBtn);
         txtForgot = findViewById(R.id.txtForgot);
 
+        btnGoogle = findViewById(R.id.btnGoogle);
+        btnFacebook = findViewById(R.id.btnFacebook);
+
         database = FirebaseDatabase.getInstance().getReference("users");
         mAuth = FirebaseAuth.getInstance();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("DAN_WEB_CLIENT_ID_CUA_BAN_VAO_DAY")
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // SHOW / HIDE PASSWORD
         btnEye.setOnClickListener(v -> {
@@ -122,6 +162,17 @@ public class LoginActivity extends AppCompatActivity {
                     });
         });
 
+        // GOOGLE LOGIN
+        btnGoogle.setOnClickListener(v -> {
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            googleSignInLauncher.launch(signInIntent);
+        });
+
+        // FACEBOOK TEST CLICK
+        btnFacebook.setOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, "Facebook login chưa cấu hình", Toast.LENGTH_SHORT).show();
+        });
+
         // GUEST
         txtGuest.setOnClickListener(v -> {
             mAuth.signOut();
@@ -142,5 +193,33 @@ public class LoginActivity extends AppCompatActivity {
         txtForgot.setOnClickListener(v -> {
             Toast.makeText(LoginActivity.this, "Chưa làm Forgot Password", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+
+                        String name = "Google User";
+
+                        if (mAuth.getCurrentUser() != null
+                                && mAuth.getCurrentUser().getDisplayName() != null) {
+                            name = mAuth.getCurrentUser().getDisplayName();
+                        }
+
+                        Toast.makeText(LoginActivity.this, "Google login success", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("USERNAME", name);
+                        intent.putExtra("IS_GUEST", false);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Firebase Google auth failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
