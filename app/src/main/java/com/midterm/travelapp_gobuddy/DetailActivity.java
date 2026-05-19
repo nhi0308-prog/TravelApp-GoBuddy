@@ -1,18 +1,25 @@
 package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.midterm.travelapp_gobuddy.databinding.ActivityDetailBinding;
+
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
@@ -169,6 +176,52 @@ public class DetailActivity extends AppCompatActivity {
                         Log.e("FirebaseError", error.getMessage());
                     }
                 });
+        String tourKey = object.getTitle().replaceAll("[^a-zA-Z0-9]", "_");
+        DatabaseReference favRef = FirebaseDatabase.getInstance()
+                .getReference("Favorites")
+                .child(tourKey);
+
+        final boolean[] isFavorited = {false};
+
+        // Kiểm tra trạng thái tim khi mở màn hình
+        favRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                isFavorited[0] = snapshot.exists();
+                updateHeartIcon(isFavorited[0]);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("DetailActivity", "Lỗi kiểm tra favorite: " + error.getMessage());
+            }
+        });
+
+        // Nhấn tim → toggle lưu/xóa khỏi Firebase
+        binding.imageView5.setOnClickListener(v -> {
+            isFavorited[0] = !isFavorited[0];
+
+            if (isFavorited[0]) {
+                favRef.setValue(object)
+                        .addOnSuccessListener(unused ->
+                                Toast.makeText(this, "❤️ Đã thêm vào Favorites!", Toast.LENGTH_SHORT).show()
+                        )
+                        .addOnFailureListener(e ->
+                                Toast.makeText(this, "Lỗi lưu Favorites!", Toast.LENGTH_SHORT).show()
+                        );
+            } else {
+                favRef.removeValue()
+                        .addOnSuccessListener(unused ->
+                                Toast.makeText(this, "🤍 Đã xóa khỏi Favorites", Toast.LENGTH_SHORT).show()
+                        )
+                        .addOnFailureListener(e ->
+                                Toast.makeText(this, "Lỗi xóa Favorites!", Toast.LENGTH_SHORT).show()
+                        );
+            }
+
+            updateHeartIcon(isFavorited[0]);
+        });
+
 
         // ====================================================================
         // --- 4. CẬP NHẬT: ĐÓNG GÓI VÀ CHUYỂN DỮ LIỆU ĐÃ CHỌN SANG TICKET ---
@@ -198,5 +251,14 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("object", object);
             startActivity(intent);
         });
+    }
+    private void updateHeartIcon(boolean isFavorited) {
+        if (isFavorited) {
+            // Tim đỏ ❤️
+            binding.imageView5.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        } else {
+            // Tim xám 🤍 (về màu gốc)
+            binding.imageView5.clearColorFilter();
+        }
     }
 }

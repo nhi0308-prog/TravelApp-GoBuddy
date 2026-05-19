@@ -59,10 +59,17 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.profile) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
+            } else if (id == R.id.bookmark) {
+                Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
+                startActivity(intent);
             }
         });
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.bottomMenu.setItemSelected(R.id.home, true);
+    }
     // setup RecyclerView kết quả search
     private void initSearch() {
         searchAdapter = new PopularAdapter(searchResultList);

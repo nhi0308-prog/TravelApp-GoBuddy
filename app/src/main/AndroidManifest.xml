@@ -53,7 +53,10 @@
         <activity
             android:name=".TicketActivity"
             android:exported="false" />
-
+        <!-- ❤️ FAVORITES -->
+        <activity
+            android:name=".FavoriteActivity"
+            android:exported="false" />
         <activity
             android:name=".PlaceGoDetailActivity"
             android:exported="false" />
