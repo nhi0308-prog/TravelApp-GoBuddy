@@ -72,7 +72,6 @@ public class ExploreActivity extends AppCompatActivity {
         categories.add("Adventure");
         categories.add("Camping");
         categories.add("Cultural");
-        categories.add("Luxury");
 
         binding.rvExploreCategories.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
