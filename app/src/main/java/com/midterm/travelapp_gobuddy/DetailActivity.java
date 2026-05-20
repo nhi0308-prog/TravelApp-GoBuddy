@@ -68,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
         // XỬ LÝ GIÁ TOUR THEO SỐ KHÁCH
         // =====================================================
 
-        final int[] guestCount = {2};
+        final int[] guestCount = {1};
 
         // Giá gốc cho 1 người
         final int basePrice = object.getPrice();
