@@ -63,7 +63,7 @@ public class TicketActivity extends AppCompatActivity {
         binding.txtTime.setText(object.getTimeTour()); // Sử dụng getTimeTour() từ object bạn set bên DetailActivity
         binding.txtGuest.setText(String.valueOf(object.getTotalGuest()));
 
-        // --- 3. ĐỔI DỮ LIỆU ĐỘNG: ORDER ID, MÃ VẠCH ---
+        // --- 3. ĐỔI DỮ LIỆU ĐỘNG: ORDER ID, MÃ VẠCH
         Random random = new Random();
         // Tạo ngẫu nhiên 1 chuỗi số Order ID (Ví dụ gồm 6 chữ số)
         String randomOrderId = String.valueOf(100000 + random.nextInt(900000));
