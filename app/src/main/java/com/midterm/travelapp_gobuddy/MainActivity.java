@@ -64,6 +64,23 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
                 startActivity(intent);
             }
+            // ====================================================================
+            // ===== CHỎ SỬA LỖI: Kiểm tra an toàn cho nút Explore qua Tên ID =====
+            // ====================================================================
+            else {
+                try {
+                    // Lấy tên định danh thực tế của ID được nhấn trong file XML
+                    String entryName = getResources().getResourceEntryName(id);
+
+                    // Nếu tên ID chứa chữ "explore" hoặc "explorer", ta mở màn hình ExploreActivity
+                    if (entryName.contains("explore")) {
+                        Intent intent = new Intent(MainActivity.this, ExploreActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 
