@@ -226,12 +226,7 @@ public class DetailActivity extends AppCompatActivity {
                                 }
 
                                 selectedTime[0] =
-                                        String.format(
-                                                "%02d:%02d%s",
-                                                hour,
-                                                minute,
-                                                amPm
-                                        );
+                                        String.format("%02d:%02d%s", hour, minute, amPm);
 
                                 binding.btnSelectTime.setText(
                                         selectedTime[0]
