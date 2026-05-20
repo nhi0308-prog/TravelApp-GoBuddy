@@ -34,7 +34,7 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     private void setVariable() {
-        // --- 1. XỬ LÝ LOAD HÌNH ẢNH BANNER ---
+        // --- 1. XỬ LÝ LOAD HÌNH ẢNH BANNER
         String imageUri = "";
         if (object.getPics() != null && !object.getPics().isEmpty()) {
             imageUri = object.getPics().get(0);
