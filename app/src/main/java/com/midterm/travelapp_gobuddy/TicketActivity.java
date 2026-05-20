@@ -53,7 +53,7 @@ public class TicketActivity extends AppCompatActivity {
                 .into(binding.imageView6);
 
 
-        // --- 2. HIỂN THỊ DỮ LIỆU CHỮ TỪ DETAIL TRANH SANG ---
+        // --- 2. HIỂN THỊ DỮ LIỆU CHỮ TỪ DETAIL TRANH SANG
         binding.imageView9.setOnClickListener(v -> finish());
 
         binding.textView9.setText(object.getTitle());
