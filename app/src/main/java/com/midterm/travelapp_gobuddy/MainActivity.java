@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,12 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         binding.bottomMenu.setItemSelected(R.id.home, true);
     }
-    // setup RecyclerView kết quả search
+
+    // setup RecyclerView
     private void initSearch() {
         searchAdapter = new PopularAdapter(searchResultList);
 
@@ -84,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
         binding.btnSearch.setOnClickListener(v -> {
             String keyword = binding.edtSearch.getText().toString().trim();
+
+            if (keyword.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Please enter a destination", Toast.LENGTH_SHORT).show();
+                binding.txtSearchResultTitle.setVisibility(View.GONE);
+                binding.rvSearchResults.setVisibility(View.GONE);
+                return;
+            }
+
             filterPlaces(keyword);
         });
 
@@ -94,7 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterPlaces(s.toString().trim());
+                String keyword = s.toString().trim();
+
+                if (keyword.isEmpty()) {
+                    searchResultList.clear();
+                    searchAdapter.notifyDataSetChanged();
+                    binding.txtSearchResultTitle.setVisibility(View.GONE);
+                    binding.rvSearchResults.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -103,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // load địa điểm từ Firebase để search
+    // load địa điểm từ Firebase
     private void loadPlacesForSearch() {
         DatabaseReference myRef = database.getReference("Popular");
 
@@ -134,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // lọc địa điểm theo title, address, description
+    // lọc địa điểm
     private void filterPlaces(String keyword) {
         searchResultList.clear();
 
@@ -149,12 +167,14 @@ public class MainActivity extends AppCompatActivity {
 
         for (ItemModel item : allPlaceList) {
             String title = item.getTitle() != null ? item.getTitle().toLowerCase() : "";
+            String name = item.getName() != null ? item.getName().toLowerCase() : "";
             String address = item.getAddress() != null ? item.getAddress().toLowerCase() : "";
             String description = item.getDescription() != null ? item.getDescription().toLowerCase() : "";
             String duration = item.getDuration() != null ? item.getDuration().toLowerCase() : "";
             String distance = item.getDistance() != null ? item.getDistance().toLowerCase() : "";
 
             if (title.contains(searchText)
+                    || name.contains(searchText)
                     || address.contains(searchText)
                     || description.contains(searchText)
                     || duration.contains(searchText)
