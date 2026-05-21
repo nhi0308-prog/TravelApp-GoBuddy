@@ -120,10 +120,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView android:src="@drawable/google" android:layout_width="50dp" android:layout_height="50dp"/>
-            <ImageView android:src="@drawable/facebook" android:layout_width="50dp" android:layout_height="50dp"/>
-            <ImageView android:src="@drawable/apple" android:layout_width="50dp" android:layout_height="50dp"/>
-            <ImageView android:src="@drawable/microsoft" android:layout_width="50dp" android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/btnGoogle"
+                android:src="@drawable/google"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <ImageView
+                android:id="@+id/btnFacebook"
+                android:src="@drawable/facebook"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="12dp"
+                android:clickable="true"
+                android:focusable="true" />
+
         </LinearLayout>
 
         <View

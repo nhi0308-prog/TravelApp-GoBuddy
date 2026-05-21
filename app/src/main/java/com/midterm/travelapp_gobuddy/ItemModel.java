@@ -28,9 +28,21 @@ public class ItemModel implements Serializable {
     private String Name;
     private String ImagePath;
 
+    // ===== CHỖ BỔ SUNG: Biến hứng dữ liệu danh mục từ Firebase =====
+    private String category;
 
     public ItemModel() {
     }
+
+    // ===== CHỖ BỔ SUNG: Getter và Setter cho category =====
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    // ========================================================
 
     public String getTimeTour() {
         return timeTour;
@@ -226,9 +238,7 @@ public class ItemModel implements Serializable {
         return ImagePath;
     }
 
-
     public void setImagePath(String imagePath) {
         ImagePath = imagePath;
     }
-
 }

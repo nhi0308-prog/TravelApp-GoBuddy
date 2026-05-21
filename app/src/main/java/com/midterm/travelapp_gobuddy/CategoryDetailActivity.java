@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class CategoryDetailActivity extends AppCompatActivity {
 
     TextView txtCategoryTitle;
+    TextView btnBack;
     RecyclerView rvCategoryImages;
 
     ArrayList<CategoryPlace> placeList;
@@ -23,7 +24,10 @@ public class CategoryDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_detail);
 
         txtCategoryTitle = findViewById(R.id.txtCategoryTitle);
+        btnBack = findViewById(R.id.btnBack);
         rvCategoryImages = findViewById(R.id.rvCategoryImages);
+
+        btnBack.setOnClickListener(v -> finish());
 
         String categoryName = getIntent().getStringExtra("category_name");
 
@@ -50,7 +54,6 @@ public class CategoryDetailActivity extends AppCompatActivity {
             placeList.add(new CategoryPlace(R.drawable.flight2, "Bamboo Airways", 4.5f));
             placeList.add(new CategoryPlace(R.drawable.flight3, "Vietjet Air", 4.0f));
             placeList.add(new CategoryPlace(R.drawable.flight4, "Pacific Airlines", 4.0f));
-
 
         } else if (categoryName.equalsIgnoreCase("Place")) {
             placeList.add(new CategoryPlace(R.drawable.place1, "Da Nang Dragon Bridge", 5.0f));

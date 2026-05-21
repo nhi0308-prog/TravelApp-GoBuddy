@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,51 +13,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelAppGoBuddy">
-        <activity android:name=".CategoryDetailActivity" />
-
-        <!-- 🚀 INTRO -->
+        <activity
+            android:name=".ExploreActivity"
+            android:exported="false" />
+        <activity android:name=".CategoryDetailActivity" /> <!-- 🚀 INTRO -->
         <activity
             android:name=".IntroActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 🔐 LOGIN -->
+        </activity> <!-- 🔐 LOGIN -->
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-
-        <!-- 📝 SIGN UP -->
+            android:exported="false" /> <!-- 📝 SIGN UP -->
         <activity
             android:name=".SignUpActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
-        <!-- 📱 MAIN -->
+            android:exported="false" /> <!-- 📱 MAIN -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
-        <!-- 📄 DETAIL -->
+            android:exported="false" /> <!-- 📄 DETAIL -->
         <activity
             android:name=".DetailActivity"
-            android:exported="false" />
-
-        <!-- 🎫 TICKET -->
+            android:exported="false" /> <!-- 🎫 TICKET -->
         <activity
             android:name=".TicketActivity"
+            android:exported="false" /> <!-- ❤️ FAVORITES -->
+        <activity
+            android:name=".FavoriteActivity"
             android:exported="false" />
-
         <activity
             android:name=".PlaceGoDetailActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

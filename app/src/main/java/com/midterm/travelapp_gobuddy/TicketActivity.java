@@ -34,7 +34,7 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     private void setVariable() {
-        // --- 1. XỬ LÝ LOAD HÌNH ẢNH BANNER ---
+        // --- 1. XỬ LÝ LOAD HÌNH ẢNH BANNER
         String imageUri = "";
         if (object.getPics() != null && !object.getPics().isEmpty()) {
             imageUri = object.getPics().get(0);
@@ -53,7 +53,7 @@ public class TicketActivity extends AppCompatActivity {
                 .into(binding.imageView6);
 
 
-        // --- 2. HIỂN THỊ DỮ LIỆU CHỮ TỪ DETAIL TRANH SANG ---
+        // --- 2. HIỂN THỊ DỮ LIỆU CHỮ TỪ DETAIL TRANH SANG
         binding.imageView9.setOnClickListener(v -> finish());
 
         binding.textView9.setText(object.getTitle());
@@ -63,7 +63,7 @@ public class TicketActivity extends AppCompatActivity {
         binding.txtTime.setText(object.getTimeTour()); // Sử dụng getTimeTour() từ object bạn set bên DetailActivity
         binding.txtGuest.setText(String.valueOf(object.getTotalGuest()));
 
-        // --- 3. ĐỔI DỮ LIỆU ĐỘNG: ORDER ID, MÃ VẠCH ---
+        // --- 3. ĐỔI DỮ LIỆU ĐỘNG: ORDER ID, MÃ VẠCH
         Random random = new Random();
         // Tạo ngẫu nhiên 1 chuỗi số Order ID (Ví dụ gồm 6 chữ số)
         String randomOrderId = String.valueOf(100000 + random.nextInt(900000));
