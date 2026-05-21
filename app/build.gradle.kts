@@ -44,9 +44,9 @@ dependencies {
     implementation(libs.firebase.database)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.firebase:firebase-auth:22.3.1")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     implementation("com.google.zxing:core:3.5.3")
 
