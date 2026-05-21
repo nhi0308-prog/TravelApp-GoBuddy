@@ -160,6 +160,9 @@ public class ItemModel implements Serializable {
         }
         return new ArrayList<>();
     }
+    public void setPics(ArrayList<String> pics) {
+        this.pics = pics;
+    }
 
     //  lấy link ảnh đầu tiên, ưu tiên pic[0], nếu không có thì lấy ImagePath
     public String getDisplayImage() {
