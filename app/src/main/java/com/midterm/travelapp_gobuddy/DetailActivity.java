@@ -292,11 +292,18 @@ public class DetailActivity extends AppCompatActivity {
 
                                 // dữ liệu dự phòng
                                 if (guideNames.isEmpty()) {
-
-                                    guideNames.add("Emily Waston");
+                                    // Thêm danh sách tên dự phòng
+                                    guideNames.add("Emily Watson");
                                     guidePhones.add("0905123456");
-                                }
 
+                                    guideNames.add("Jean Dupont");
+                                    guidePhones.add("0905789123");
+
+                                    guideNames.add("Alexandre Nguyen");
+                                    guidePhones.add("0914111222");
+
+
+                                }
                                 spinnerAdapter.notifyDataSetChanged();
                             }
 
