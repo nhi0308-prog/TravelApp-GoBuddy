@@ -301,7 +301,8 @@ public class DetailActivity extends AppCompatActivity {
 
                                     guideNames.add("Alexandre Nguyen");
                                     guidePhones.add("0914111222");
-
+                                    guideNames.add("Marie Curie");
+                                    guidePhones.add("0935333444");
 
                                 }
                                 spinnerAdapter.notifyDataSetChanged();
