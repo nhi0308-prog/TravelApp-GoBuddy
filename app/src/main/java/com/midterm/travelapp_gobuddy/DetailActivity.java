@@ -251,7 +251,7 @@ public class DetailActivity extends AppCompatActivity {
         android.widget.ArrayAdapter<String> spinnerAdapter =
                 new android.widget.ArrayAdapter<>(
                         this,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_area_item, // Sử dụng layout tùy chỉnh ở đây
                         guideNames
                 );
 
