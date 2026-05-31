@@ -180,11 +180,11 @@
                         android:id="@+id/imgGuide"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:shapeAppearanceOverlay="@style/roundedFullCorner"
+                        android:src="@drawable/ava2"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:src="@drawable/ava1" />
+                        app:shapeAppearanceOverlay="@style/roundedFullCorner" />
 
                     <LinearLayout
                         android:id="@+id/layoutGuideInfo"

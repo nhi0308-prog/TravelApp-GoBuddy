@@ -511,7 +511,7 @@
                             android:id="@+id/spinnerGuides"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="#3B82F6"
+                            android:textColor="#1976D2"
                             android:spinnerMode="dropdown"/>
                     </LinearLayout>
                 </LinearLayout>
