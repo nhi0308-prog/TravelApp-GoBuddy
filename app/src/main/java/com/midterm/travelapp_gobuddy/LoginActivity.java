@@ -74,12 +74,11 @@ public class LoginActivity extends AppCompatActivity {
         txtSignup = findViewById(R.id.txtSignupBtn);
 
         btnGoogle = findViewById(R.id.btnGoogle);
-
         database = FirebaseDatabase.getInstance().getReference("users");
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("DAN_WEB_CLIENT_ID_CUA_BAN_VAO_DAY")
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
