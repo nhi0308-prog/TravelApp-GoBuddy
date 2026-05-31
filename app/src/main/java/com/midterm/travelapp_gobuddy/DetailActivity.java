@@ -128,8 +128,22 @@ public class DetailActivity extends AppCompatActivity {
                         for (int j = 0; j < thumbs.length; j++) {
 
                             if (j == finalI) {
+                                // Thumb được chọn: nổi lên
+                                thumbs[j].animate()
+                                        .scaleX(1.2f)
+                                        .scaleY(1.2f)
+                                        .translationZ(16f)
+                                        .setDuration(200)
+                                        .start();
                                 thumbs[j].setAlpha(1.0f);
                             } else {
+                                // Thumb không chọn: thu về bình thường
+                                thumbs[j].animate()
+                                        .scaleX(1.0f)
+                                        .scaleY(1.0f)
+                                        .translationZ(0f)
+                                        .setDuration(200)
+                                        .start();
                                 thumbs[j].setAlpha(0.4f);
                             }
                         }
