@@ -150,10 +150,6 @@ public class DetailActivity extends AppCompatActivity {
             binding.thumbScroll.setVisibility(View.GONE);
         }
 
-        // =====================================================
-        // HIỂN THỊ THỜI LƯỢNG TOUR
-        // =====================================================
-
         if (object.getDuration() != null &&
                 !object.getDuration().isEmpty()) {
 
@@ -163,11 +159,6 @@ public class DetailActivity extends AppCompatActivity {
 
             binding.txtDurationDetail.setText("Chưa cập nhật");
         }
-
-        // =====================================================
-        // NÚT GIẢM SỐ KHÁCH
-        // =====================================================
-
         binding.btnMinusGuest.setOnClickListener(v -> {
 
             if (guestCount[0] > 1) {
@@ -182,11 +173,6 @@ public class DetailActivity extends AppCompatActivity {
                 updateTotalPrice.run();
             }
         });
-
-        // =====================================================
-        // NÚT TĂNG SỐ KHÁCH
-        // =====================================================
-
         binding.btnPlusGuest.setOnClickListener(v -> {
 
             guestCount[0]++;
@@ -379,7 +365,6 @@ public class DetailActivity extends AppCompatActivity {
                         );
 
             } else {
-
                 favRef.removeValue()
                         .addOnSuccessListener(unused ->
                                 Toast.makeText(
@@ -396,14 +381,8 @@ public class DetailActivity extends AppCompatActivity {
                                 ).show()
                         );
             }
-
             updateHeartIcon(isFavorited[0]);
         });
-
-        // =====================================================
-        // BOOK TOUR
-        // =====================================================
-
         binding.btnBook.setOnClickListener(view -> {
 
             // 1. Kiểm tra đăng nhập
@@ -447,24 +426,17 @@ public class DetailActivity extends AppCompatActivity {
                             .toString()
             );
 
-            // Cập nhật tổng giá
             int totalPrice = basePrice * guestCount[0];
             object.setPrice(totalPrice);
-
-            // 4. Lưu trực tiếp lịch sử đặt vé lên Firebase (Chạy nền)
             DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("Bookings");
             String bookingId = bookingRef.child(userId).push().getKey();
-
             java.util.HashMap<String, String> newBooking = new java.util.HashMap<>();
             newBooking.put("placeName", object.getTitle());
             String currentDate = android.text.format.DateFormat.format("dd/MM/yyyy", new java.util.Date()).toString();
             newBooking.put("date", currentDate + " (" + selectedTime[0] + ")");
             newBooking.put("price", "$" + totalPrice);
             newBooking.put("status", "Đã đặt thành công");
-
-            // ===== LƯU ĐẦY ĐỦ THÔNG TIN VÉ ĐỂ LỊCH SỬ HIỂN THỊ ĐÚNG =====
             String imagePath = "";
-
             if (object.getPics() != null && !object.getPics().isEmpty()) {
                 imagePath = object.getPics().get(0);
             } else if (object.getImagePath() != null) {
@@ -504,11 +476,6 @@ public class DetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
-    // =====================================================
-    // CẬP NHẬT ICON TIM
-    // =====================================================
-
     private void updateHeartIcon(boolean isFavorited) {
 
         if (isFavorited) {
