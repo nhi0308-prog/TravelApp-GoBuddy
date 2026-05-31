@@ -337,6 +337,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="4dp"
+                    android:justificationMode="inter_word"
                     android:text="Experience the vibrant energy of Đà Nẵng from our exclusive luxury river view apartment. Overlook the spectacular Dragon Bridge and Hàn River at sunrise. Explore the nearby local markets and experience authentic cuisine. Natural, local experiences and Bà Nà Hills tours are easily arranged. Enjoy unparalleled views. A perfect urban retreat for families."
                     android:textColor="#555555"
                     android:textSize="14sp" />
