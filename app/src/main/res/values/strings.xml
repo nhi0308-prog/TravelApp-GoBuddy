@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TravelApp-GoBuddy</string>
     <string name="tour_guide">Tour Guide</string>
+
+    <string name="facebook_app_id">2425433167921140</string>
+    <string name="fb_login_protocol_scheme">fb2425433167921140</string>
+    <string name="facebook_client_token">f143e26f4f99abab76d3789ce7dda2ef</string>
 </resources>
