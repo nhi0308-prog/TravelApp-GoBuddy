@@ -47,7 +47,9 @@ public class FavoriteActivity extends AppCompatActivity {
                 finish();
 
             } else if (id == R.id.explorer) {
-                Toast.makeText(FavoriteActivity.this, "Explore", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FavoriteActivity.this, ExploreActivity.class);
+                startActivity(intent);
+                finish();
 
             } else if (id == R.id.bookmark) {
                 // Đang ở trang Saved nên không làm gì
