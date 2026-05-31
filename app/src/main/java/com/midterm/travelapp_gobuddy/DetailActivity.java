@@ -155,7 +155,10 @@ public class DetailActivity extends AppCompatActivity {
             binding.pic.setOnTouchListener(new View.OnTouchListener() {
 
                 private float startX = 0;
-                private static final int SWIPE_THRESHOLD = 80;
+                private float startY = 0;
+                private boolean isSwiping = false;
+                private static final int SWIPE_THRESHOLD = 40; // giảm từ 80 → 40
+                private static final int SWIPE_VELOCITY = 5;
 
                 @Override
                 public boolean onTouch(View v, android.view.MotionEvent event) {
@@ -164,49 +167,75 @@ public class DetailActivity extends AppCompatActivity {
 
                         case android.view.MotionEvent.ACTION_DOWN:
                             startX = event.getX();
+                            startY = event.getY();
+                            isSwiping = false;
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                            return true;
+
+                        case android.view.MotionEvent.ACTION_MOVE:
+                            float moveX = event.getX() - startX;
+                            float moveY = event.getY() - startY;
+
+                            // Xác định swipe ngang sớm
+                            if (!isSwiping && Math.abs(moveX) > Math.abs(moveY)
+                                    && Math.abs(moveX) > SWIPE_VELOCITY) {
+                                isSwiping = true;
+                            }
+
+                            // Kéo ảnh theo ngón tay realtime
+                            if (isSwiping) {
+                                binding.pic.setTranslationX(moveX * 0.4f);
+                                v.getParent().requestDisallowInterceptTouchEvent(true);
+                            }
                             return true;
 
                         case android.view.MotionEvent.ACTION_UP:
+                        case android.view.MotionEvent.ACTION_CANCEL:
                             float diffX = event.getX() - startX;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
 
-                            if (Math.abs(diffX) > SWIPE_THRESHOLD) {
+                            if (isSwiping && Math.abs(diffX) > SWIPE_THRESHOLD) {
 
                                 if (diffX < 0) {
-                                    // Swipe trái → ảnh tiếp theo
                                     if (currentIndex[0] < images.size() - 1) {
                                         currentIndex[0]++;
                                     } else {
-                                        currentIndex[0] = 0; // vòng lại đầu
+                                        currentIndex[0] = 0;
                                     }
                                 } else {
-                                    // Swipe phải → ảnh trước
                                     if (currentIndex[0] > 0) {
                                         currentIndex[0]--;
                                     } else {
-                                        currentIndex[0] = images.size() - 1; // vòng lại cuối
+                                        currentIndex[0] = images.size() - 1;
                                     }
                                 }
 
-                                // Animation slide
-                                float slideOut = diffX < 0 ? -binding.pic.getWidth() : binding.pic.getWidth();
+                                float slideOut = diffX < 0
+                                        ? -binding.pic.getWidth()
+                                        : binding.pic.getWidth();
 
                                 binding.pic.animate()
                                         .translationX(slideOut)
                                         .alpha(0f)
-                                        .setDuration(200)
+                                        .setDuration(150) // giảm từ 200 → 150
                                         .withEndAction(() -> {
-
                                             updateMainImage.run();
-
-                                            binding.pic.setTranslationX(-slideOut);
+                                            binding.pic.setTranslationX(-slideOut * 0.6f);
                                             binding.pic.setAlpha(0f);
-
                                             binding.pic.animate()
                                                     .translationX(0f)
                                                     .alpha(1f)
-                                                    .setDuration(200)
+                                                    .setDuration(150)
                                                     .start();
                                         }).start();
+
+                            } else {
+                                // Không đủ swipe → trả ảnh về vị trí cũ
+                                binding.pic.animate()
+                                        .translationX(0f)
+                                        .alpha(1f)
+                                        .setDuration(100)
+                                        .start();
                             }
                             return true;
                     }
