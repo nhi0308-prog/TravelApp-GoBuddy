@@ -118,6 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String email = snapshot.child("email").getValue(String.class);
                 String address = snapshot.child("address").getValue(String.class);
 
+
                 if (lastName == null) lastName = "";
                 if (firstName == null) firstName = "";
                 if (birthday == null) birthday = "";
