@@ -13,44 +13,61 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelAppGoBuddy">
+
         <activity
             android:name=".ExploreActivity"
             android:exported="false" />
-        <activity android:name=".CategoryDetailActivity" /> <!-- 🚀 INTRO -->
-        <activity
-            android:name=".IntroActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".CategoryDetailActivity" /> <activity
+        android:name=".IntroActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity> <!-- 🔐 LOGIN -->
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" /> <!-- 📝 SIGN UP -->
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity> <activity
+        android:name=".LoginActivity"
+        android:exported="false" /> <activity
+        android:name=".SignUpActivity"
+        android:exported="false"
+        android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" /> <!-- 📱 MAIN -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" /> <!-- 📄 DETAIL -->
-        <activity
-            android:name=".DetailActivity"
-            android:exported="false" /> <!-- 🎫 TICKET -->
-        <activity
-            android:name=".TicketActivity"
-            android:exported="false" /> <!-- ❤️ FAVORITES -->
-        <activity
-            android:name=".FavoriteActivity"
-            android:exported="false" />
+            android:exported="false" /> <activity
+        android:name=".MainActivity"
+        android:exported="false" /> <activity
+        android:name=".DetailActivity"
+        android:exported="false" /> <activity
+        android:name=".TicketActivity"
+        android:exported="false" /> <activity
+        android:name=".FavoriteActivity"
+        android:exported="false" />
         <activity
             android:name=".PlaceGoDetailActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token"/>
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
