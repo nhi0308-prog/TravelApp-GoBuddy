@@ -11,24 +11,29 @@ import java.util.ArrayList;
 
 public class CategoryDetailActivity extends AppCompatActivity {
 
-    TextView txtCategoryTitle;
-    TextView btnBack;
-    RecyclerView rvCategoryImages;
+    private static final int GRID_SPAN_COUNT = 2;
 
-    ArrayList<CategoryPlace> placeList;
-    CategoryPlaceAdapter adapter;
+    private TextView txtCategoryTitle;
+    private TextView btnBack;
+    private RecyclerView rvCategoryImages;
+
+    private ArrayList<CategoryPlace> placeList;
+    private CategoryPlaceAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_detail);
 
+        // Initialize views
         txtCategoryTitle = findViewById(R.id.txtCategoryTitle);
         btnBack = findViewById(R.id.btnBack);
         rvCategoryImages = findViewById(R.id.rvCategoryImages);
 
+        // Back button returns to the previous screen
         btnBack.setOnClickListener(v -> finish());
 
+        // Get selected category from Home screen
         String categoryName = getIntent().getStringExtra("category_name");
 
         if (categoryName == null) {
@@ -37,6 +42,7 @@ public class CategoryDetailActivity extends AppCompatActivity {
 
         txtCategoryTitle.setText(categoryName);
 
+        // Load items based on selected category
         placeList = new ArrayList<>();
 
         if (categoryName.equalsIgnoreCase("Hotel")) {
@@ -76,8 +82,9 @@ public class CategoryDetailActivity extends AppCompatActivity {
             placeList.add(new CategoryPlace(R.drawable.food8, "Grilled Seafood", 4.8f));
         }
 
+        // Display category items in a 2-column grid
         adapter = new CategoryPlaceAdapter(placeList);
-        rvCategoryImages.setLayoutManager(new GridLayoutManager(this, 2));
+        rvCategoryImages.setLayoutManager(new GridLayoutManager(this, GRID_SPAN_COUNT));
         rvCategoryImages.setAdapter(adapter);
     }
 }
