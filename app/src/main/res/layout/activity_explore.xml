@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- EXPLORE CONTENT SECTION -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +12,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- EXPLORE SCREEN TITLE -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,24 +21,25 @@
             android:textSize="27sp"
             android:textStyle="bold" />
 
-        <!-- HORIZONTAL EXPLORE CATEGORY LIST -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvExploreCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
+            android:overScrollMode="never"
             android:scrollbars="none" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvExploreTours"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingBottom="12dp" />
     </LinearLayout>
 
-    <!-- BOTTOM NAVIGATION MENU -->
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
