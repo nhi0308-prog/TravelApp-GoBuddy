@@ -290,7 +290,7 @@ public class ProfileActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             BookingItem booking = list.get(position);
 
-            holder.txtBookingPlaceName.setText("• " + booking.placeName);
+            holder.txtBookingPlaceName.setText(booking.placeName);
             holder.txtBookingDate.setText("Ngày: " + booking.date);
             holder.txtBookingPrice.setText("Giá: " + booking.price);
             holder.txtBookingStatus.setText("Trạng thái: " + booking.status);

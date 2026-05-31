@@ -3,7 +3,10 @@ package com.midterm.travelapp_gobuddy;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -113,13 +116,38 @@ public class BookingDetailActivity extends AppCompatActivity {
         }
 
         btnCancelTour.setOnClickListener(v -> {
-            new AlertDialog.Builder(BookingDetailActivity.this)
-                    .setTitle("Hủy tour")
-                    .setMessage("Bạn có chắc muốn hủy tour này không?")
-                    .setNegativeButton("Không", null)
-                    .setPositiveButton("Hủy tour", (dialog, which) -> cancelTour())
-                    .show();
+            showCancelTourDialog();
         });
+    }
+
+    private void showCancelTourDialog() {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_cancel_tour, null);
+
+        TextView btnNoCancel = dialogView.findViewById(R.id.btnNoCancel);
+        TextView btnConfirmCancel = dialogView.findViewById(R.id.btnConfirmCancel);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create();
+
+        btnNoCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        btnConfirmCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+            cancelTour();
+        });
+
+        dialog.setOnShowListener(dialogInterface -> {
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(
+                        new ColorDrawable(android.graphics.Color.TRANSPARENT)
+                );
+            }
+        });
+
+        dialog.show();
     }
 
     private void cancelTour() {

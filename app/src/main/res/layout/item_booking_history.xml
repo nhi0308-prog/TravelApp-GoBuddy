@@ -3,9 +3,10 @@
     android:id="@+id/layoutBookingItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    android:background="@drawable/bg_booking_item"
     android:orientation="vertical"
-    android:paddingTop="8dp"
-    android:paddingBottom="14dp"
+    android:padding="14dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -14,9 +15,10 @@
         android:id="@+id/txtBookingPlaceName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="• Phu Quoc Island"
-        android:textColor="#666666"
-        android:textSize="15sp" />
+        android:text="Mua Cave"
+        android:textColor="#1F1D4A"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtBookingDate"
@@ -25,13 +27,13 @@
         android:text="Ngày: 31/05/2026 (08:30 AM)"
         android:textColor="#777777"
         android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/txtBookingPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Giá: $43"
+        android:text="Giá: $50"
         android:textColor="#777777"
         android:textSize="14sp"
         android:layout_marginTop="4dp" />
@@ -41,8 +43,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Trạng thái: Đã đặt thành công"
-        android:textColor="#777777"
+        android:textColor="#27AE60"
         android:textSize="14sp"
+        android:textStyle="bold"
         android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhấn để xem chi tiết vé"
+        android:textColor="#6E50B8"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

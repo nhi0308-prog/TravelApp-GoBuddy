@@ -295,6 +295,12 @@ public class DetailActivity extends AppCompatActivity {
 
                                     guideNames.add("Emily Waston");
                                     guidePhones.add("0905123456");
+                                    guideNames.add("Jean Dupont");
+                                    guidePhones.add("0905789123");
+                                    guideNames.add("Alexandre Nguyen");
+                                    guidePhones.add("0914111222");
+                                    guideNames.add("Marie Curie");
+                                    guidePhones.add("0935333444");
                                 }
 
                                 spinnerAdapter.notifyDataSetChanged();
