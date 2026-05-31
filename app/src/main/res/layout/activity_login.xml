@@ -85,16 +85,6 @@
                 android:focusable="true"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtForgot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textSize="12sp"
-            android:textColor="#555"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="end"/>
-
         <Button
             android:id="@+id/btnLogin"
             android:text="Log In"
@@ -125,15 +115,6 @@
                 android:src="@drawable/google"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:clickable="true"
-                android:focusable="true" />
-
-            <ImageView
-                android:id="@+id/btnFacebook"
-                android:src="@drawable/facebook"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="12dp"
                 android:clickable="true"
                 android:focusable="true" />
 

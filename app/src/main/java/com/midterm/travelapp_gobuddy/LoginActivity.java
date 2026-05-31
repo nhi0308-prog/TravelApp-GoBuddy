@@ -32,9 +32,9 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPassword;
     ImageView btnEye;
-    ImageView btnGoogle, btnFacebook;
+    ImageView btnGoogle;
     Button btnLogin;
-    TextView txtGuest, txtSignup, txtForgot;
+    TextView txtGuest, txtSignup;
 
     boolean isShow = false;
 
@@ -72,10 +72,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         txtGuest = findViewById(R.id.txtGuest);
         txtSignup = findViewById(R.id.txtSignupBtn);
-        txtForgot = findViewById(R.id.txtForgot);
 
         btnGoogle = findViewById(R.id.btnGoogle);
-        btnFacebook = findViewById(R.id.btnFacebook);
 
         database = FirebaseDatabase.getInstance().getReference("users");
         mAuth = FirebaseAuth.getInstance();
@@ -168,11 +166,6 @@ public class LoginActivity extends AppCompatActivity {
             googleSignInLauncher.launch(signInIntent);
         });
 
-        // FACEBOOK TEST CLICK
-        btnFacebook.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Facebook login chưa cấu hình", Toast.LENGTH_SHORT).show();
-        });
-
         // GUEST
         txtGuest.setOnClickListener(v -> {
             mAuth.signOut();
@@ -187,11 +180,6 @@ public class LoginActivity extends AppCompatActivity {
         txtSignup.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
-        });
-
-        // FORGOT PASSWORD
-        txtForgot.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Chưa làm Forgot Password", Toast.LENGTH_SHORT).show();
         });
     }
 
