@@ -20,7 +20,7 @@
             android:layout_marginTop="16dp"
             android:text="Explore Destinations"
             android:textColor="#1A2B49"
-            android:textSize="24sp"
+            android:textSize="27sp"
             android:textStyle="bold" />
 
         <!-- HORIZONTAL EXPLORE CATEGORY LIST -->
