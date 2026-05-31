@@ -360,6 +360,31 @@ public class DetailActivity extends AppCompatActivity {
 
             isFavorited[0] = !isFavorited[0];
 
+            // Hiệu ứng nổi bong bóng
+            v.animate()
+                    .scaleX(1.4f)
+                    .scaleY(1.4f)
+                    .setDuration(120)
+                    .withEndAction(() ->
+                            v.animate()
+                                    .scaleX(0.85f)
+                                    .scaleY(0.85f)
+                                    .setDuration(80)
+                                    .withEndAction(() ->
+                                            v.animate()
+                                                    .scaleX(1.1f)
+                                                    .scaleY(1.1f)
+                                                    .setDuration(60)
+                                                    .withEndAction(() ->
+                                                            v.animate()
+                                                                    .scaleX(1.0f)
+                                                                    .scaleY(1.0f)
+                                                                    .setDuration(50)
+                                                                    .start()
+                                                    ).start()
+                                    ).start()
+                    ).start();
+
             if (isFavorited[0]) {
 
                 favRef.setValue(object)
