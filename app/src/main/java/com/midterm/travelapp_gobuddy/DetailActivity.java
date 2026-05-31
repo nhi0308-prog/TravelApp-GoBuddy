@@ -398,9 +398,24 @@ public class DetailActivity extends AppCompatActivity {
         // BOOK TOUR
         // =====================================================
 
+        // =====================================================
+        // BOOK TOUR
+        // =====================================================
+
         binding.btnBook.setOnClickListener(view -> {
 
-            // Lấy guide được chọn
+            // 1. Kiểm tra đăng nhập
+            com.google.firebase.auth.FirebaseAuth mAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
+            com.google.firebase.auth.FirebaseUser currentUser = mAuth.getCurrentUser();
+
+            if (currentUser == null) {
+                Toast.makeText(DetailActivity.this, "Vui lòng đăng nhập để đặt tour!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String userId = currentUser.getUid();
+
+            // 2. Lấy guide được chọn
             if (!guideNames.isEmpty()) {
 
                 int selectedIndex =
@@ -421,11 +436,9 @@ public class DetailActivity extends AppCompatActivity {
                 object.setTourGuidePhone("0905123456");
             }
 
-            // Gán dữ liệu booking
+            // 3. Gán dữ liệu booking
             object.setTimeTour(selectedTime[0]);
-
             object.setTotalGuest(guestCount[0]);
-
             object.setDuration(
                     binding.txtDurationDetail
                             .getText()
@@ -433,11 +446,25 @@ public class DetailActivity extends AppCompatActivity {
             );
 
             // Cập nhật tổng giá
-            object.setPrice(
-                    (int) (basePrice * guestCount[0])
-            );
+            int totalPrice = basePrice * guestCount[0];
+            object.setPrice(totalPrice);
 
-            // Chuyển sang TicketActivity
+            // 4. Lưu trực tiếp lịch sử đặt vé lên Firebase (Chạy nền)
+            DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("Bookings");
+            String bookingId = bookingRef.child(userId).push().getKey();
+
+            java.util.HashMap<String, String> newBooking = new java.util.HashMap<>();
+            newBooking.put("placeName", object.getTitle());
+            String currentDate = android.text.format.DateFormat.format("dd/MM/yyyy", new java.util.Date()).toString();
+            newBooking.put("date", currentDate + " (" + selectedTime[0] + ")");
+            newBooking.put("price", "$" + totalPrice);
+            newBooking.put("status", "Đã đặt thành công");
+
+            if (bookingId != null) {
+                bookingRef.child(userId).child(bookingId).setValue(newBooking);
+            }
+
+            // 5. Chuyển sang TicketActivity ngay lập tức
             Intent intent =
                     new Intent(
                             DetailActivity.this,
@@ -447,8 +474,7 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("object", object);
 
             startActivity(intent);
-        });
-    }
+        });}
 
     // =====================================================
     // CẬP NHẬT ICON TIM
