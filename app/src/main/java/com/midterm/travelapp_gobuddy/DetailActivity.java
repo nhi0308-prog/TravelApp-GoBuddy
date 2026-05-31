@@ -462,7 +462,7 @@ public class DetailActivity extends AppCompatActivity {
             newBooking.put("price", "$" + totalPrice);
             newBooking.put("status", "Đã đặt thành công");
 
-            // ===== THÊM: LƯU ĐẦY ĐỦ THÔNG TIN VÉ ĐỂ LỊCH SỬ HIỂN THỊ ĐÚNG =====
+            // ===== LƯU ĐẦY ĐỦ THÔNG TIN VÉ ĐỂ LỊCH SỬ HIỂN THỊ ĐÚNG =====
             String imagePath = "";
 
             if (object.getPics() != null && !object.getPics().isEmpty()) {
