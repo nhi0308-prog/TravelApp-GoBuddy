@@ -6,7 +6,7 @@
     android:layout_marginBottom="14dp"
     android:background="@drawable/bg_booking_item"
     android:orientation="vertical"
-    android:padding="14dp"
+    android:padding="16dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="Mua Cave"
         android:textColor="#1F1D4A"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -49,12 +49,22 @@
         android:layout_marginTop="4dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtBookingOrderCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mã đặt vé: GB-2026-001"
+        android:textColor="#999999"
+        android:textSize="13sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nhấn để xem chi tiết vé"
         android:textColor="#6E50B8"
         android:textSize="13sp"
         android:textStyle="bold"
+        android:gravity="end"
         android:layout_marginTop="10dp" />
 
 </LinearLayout>
