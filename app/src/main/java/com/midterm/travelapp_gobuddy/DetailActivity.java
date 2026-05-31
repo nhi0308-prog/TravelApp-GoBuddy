@@ -106,6 +106,26 @@ public class DetailActivity extends AppCompatActivity {
                     binding.thumb4
             };
 
+            final int[] currentIndex = {0};
+
+            Runnable updateMainImage = () -> {
+                Glide.with(DetailActivity.this)
+                        .load(images.get(currentIndex[0]))
+                        .into(binding.pic);
+
+                for (int j = 0; j < thumbs.length; j++) {
+                    if (j == currentIndex[0]) {
+                        thumbs[j].animate().scaleX(1.2f).scaleY(1.2f)
+                                .translationZ(16f).setDuration(200).start();
+                        thumbs[j].setAlpha(1.0f);
+                    } else {
+                        thumbs[j].animate().scaleX(1.0f).scaleY(1.0f)
+                                .translationZ(0f).setDuration(200).start();
+                        thumbs[j].setAlpha(0.4f);
+                    }
+                }
+            };
+
             for (int i = 0; i < thumbs.length; i++) {
 
                 if (i < images.size()) {
@@ -120,40 +140,79 @@ public class DetailActivity extends AppCompatActivity {
                     final int finalI = i;
 
                     thumbs[i].setOnClickListener(v -> {
-
-                        Glide.with(DetailActivity.this)
-                                .load(images.get(finalI))
-                                .into(binding.pic);
-
-                        for (int j = 0; j < thumbs.length; j++) {
-
-                            if (j == finalI) {
-                                // Thumb được chọn: nổi lên
-                                thumbs[j].animate()
-                                        .scaleX(1.2f)
-                                        .scaleY(1.2f)
-                                        .translationZ(16f)
-                                        .setDuration(200)
-                                        .start();
-                                thumbs[j].setAlpha(1.0f);
-                            } else {
-                                // Thumb không chọn: thu về bình thường
-                                thumbs[j].animate()
-                                        .scaleX(1.0f)
-                                        .scaleY(1.0f)
-                                        .translationZ(0f)
-                                        .setDuration(200)
-                                        .start();
-                                thumbs[j].setAlpha(0.4f);
-                            }
-                        }
+                        currentIndex[0] = finalI;
+                        updateMainImage.run();
                     });
 
                 } else {
-
                     thumbs[i].setVisibility(View.GONE);
                 }
             }
+
+// =====================================================
+// SWIPE TRÁI/PHẢI ĐỔI ẢNH CHÍNH
+// =====================================================
+            binding.pic.setOnTouchListener(new View.OnTouchListener() {
+
+                private float startX = 0;
+                private static final int SWIPE_THRESHOLD = 80;
+
+                @Override
+                public boolean onTouch(View v, android.view.MotionEvent event) {
+
+                    switch (event.getAction()) {
+
+                        case android.view.MotionEvent.ACTION_DOWN:
+                            startX = event.getX();
+                            return true;
+
+                        case android.view.MotionEvent.ACTION_UP:
+                            float diffX = event.getX() - startX;
+
+                            if (Math.abs(diffX) > SWIPE_THRESHOLD) {
+
+                                if (diffX < 0) {
+                                    // Swipe trái → ảnh tiếp theo
+                                    if (currentIndex[0] < images.size() - 1) {
+                                        currentIndex[0]++;
+                                    } else {
+                                        currentIndex[0] = 0; // vòng lại đầu
+                                    }
+                                } else {
+                                    // Swipe phải → ảnh trước
+                                    if (currentIndex[0] > 0) {
+                                        currentIndex[0]--;
+                                    } else {
+                                        currentIndex[0] = images.size() - 1; // vòng lại cuối
+                                    }
+                                }
+
+                                // Animation slide
+                                float slideOut = diffX < 0 ? -binding.pic.getWidth() : binding.pic.getWidth();
+
+                                binding.pic.animate()
+                                        .translationX(slideOut)
+                                        .alpha(0f)
+                                        .setDuration(200)
+                                        .withEndAction(() -> {
+
+                                            updateMainImage.run();
+
+                                            binding.pic.setTranslationX(-slideOut);
+                                            binding.pic.setAlpha(0f);
+
+                                            binding.pic.animate()
+                                                    .translationX(0f)
+                                                    .alpha(1f)
+                                                    .setDuration(200)
+                                                    .start();
+                                        }).start();
+                            }
+                            return true;
+                    }
+                    return false;
+                }
+            });
 
         } else if (object.getImagePath() != null) {
 
