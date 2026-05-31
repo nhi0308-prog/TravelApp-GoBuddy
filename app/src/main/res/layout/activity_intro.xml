@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".IntroActivity">
 
+    <!-- INTRO BACKGROUND IMAGE -->
     <ImageView
         android:id="@+id/backgroundImageView"
         android:layout_width="match_parent"
@@ -18,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- DARK GRADIENT OVERLAY FOR TEXT READABILITY -->
     <View
         android:id="@+id/backgroundOverlay"
         android:layout_width="match_parent"
@@ -28,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- INTRO TITLE TEXT -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="0dp"
@@ -45,6 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- INTRO DESCRIPTION TEXT -->
     <TextView
         android:id="@+id/descText"
         android:layout_width="0dp"
@@ -62,6 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
+    <!-- APP NAME BRANDING TEXT -->
     <TextView
         android:id="@+id/appNameText"
         android:layout_width="0dp"
@@ -77,6 +82,7 @@
         app:layout_constraintStart_toStartOf="@+id/descText"
         app:layout_constraintTop_toBottomOf="@+id/descText" />
 
+    <!-- START BUTTON TO ENTER THE APP -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/startButton"
         android:layout_width="120dp"

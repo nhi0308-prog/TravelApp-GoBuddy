@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- HEADER -->
+            <!-- USER HEADER SECTION -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- SEARCH -->
+            <!-- SEARCH BAR SECTION -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -123,7 +123,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- TITLE -->
+            <!-- MAIN TITLE SECTION -->
             <TextView
                 android:text="Enjoy your journey without limits ✈"
                 android:textSize="24sp"
@@ -152,7 +152,7 @@
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone" />
 
-            <!-- CATEGORY -->
+            <!-- CATEGORY LIST SECTION -->
             <TextView
                 android:text="Categories"
                 android:textSize="16sp"
@@ -168,7 +168,7 @@
                 android:layout_marginBottom="20dp"
                 android:nestedScrollingEnabled="false" />
 
-            <!-- 4 ICON TRÒN -->
+            <!-- QUICK ACCESS CATEGORY BUTTONS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                 android:weightSum="4"
                 android:layout_marginBottom="24dp">
 
-                <!-- HOTEL -->
+                <!-- HOTEL CATEGORY BUTTON -->
                 <LinearLayout
                     android:id="@+id/layoutHotel"
                     android:layout_weight="1"
@@ -212,7 +212,7 @@
 
                 </LinearLayout>
 
-                <!-- FLIGHT -->
+                <!-- FLIGHT CATEGORY BUTTON -->
                 <LinearLayout
                     android:id="@+id/layoutFlight"
                     android:layout_weight="1"
@@ -248,7 +248,7 @@
 
                 </LinearLayout>
 
-                <!-- PLACE -->
+                <!-- PLACE CATEGORY BUTTON -->
                 <LinearLayout
                     android:id="@+id/layoutPlace"
                     android:layout_weight="1"
@@ -284,7 +284,7 @@
 
                 </LinearLayout>
 
-                <!-- FOOD -->
+                <!-- FOOD CATEGORY BUTTON -->
                 <LinearLayout
                     android:id="@+id/layoutFood"
                     android:layout_weight="1"
@@ -322,7 +322,7 @@
 
             </LinearLayout>
 
-            <!-- POPULAR -->
+            <!-- POPULAR STAYS SECTION -->
             <TextView
                 android:text="Popular Stays"
                 android:textStyle="bold"
@@ -349,7 +349,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- BOTTOM NAV -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
