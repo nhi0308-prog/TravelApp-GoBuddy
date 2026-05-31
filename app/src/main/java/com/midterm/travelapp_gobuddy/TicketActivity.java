@@ -96,6 +96,7 @@ public class TicketActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+
         // --- 5. NÚT DOWNLOAD TICKET (CHỤP VÀ LƯU VÀO THƯ VIỆN ẢNH) ---
         binding.btnDownload.setOnClickListener(v -> {
             // Chụp phần Layout Vé (Toàn bộ LinearLayout bên trong ScrollView trừ phần tiêu đề)
