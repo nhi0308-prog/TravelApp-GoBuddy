@@ -23,10 +23,12 @@ public class ProfileActivity extends AppCompatActivity {
     TextView txtAvatarLetter;
     TextView txtProfileName, txtProfileEmail;
     TextView txtLastName, txtFirstName, txtBirthday, txtAddress, txtStatus;
+    TextView txtBookingHistory;
     Button btnLogout;
 
     FirebaseAuth mAuth;
     DatabaseReference database;
+    DatabaseReference bookingDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,12 @@ public class ProfileActivity extends AppCompatActivity {
         txtBirthday = findViewById(R.id.txtBirthday);
         txtAddress = findViewById(R.id.txtAddress);
         txtStatus = findViewById(R.id.txtStatus);
+        txtBookingHistory = findViewById(R.id.txtBookingHistory);
         btnLogout = findViewById(R.id.btnLogout);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("users");
+        bookingDatabase = FirebaseDatabase.getInstance().getReference("Bookings");
 
         loadUserInfo();
 
@@ -97,6 +101,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         String userId = currentUser.getUid();
+
+        loadBookingHistory(userId);
 
         database.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -155,6 +161,52 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(ProfileActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadBookingHistory(String userId) {
+        bookingDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    txtBookingHistory.setText("Chưa có lịch sử đặt vé");
+                    return;
+                }
+
+                StringBuilder history = new StringBuilder();
+
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    String placeName = data.child("placeName").getValue(String.class);
+                    String date = data.child("date").getValue(String.class);
+                    String price = data.child("price").getValue(String.class);
+                    String status = data.child("status").getValue(String.class);
+
+                    if (placeName == null) placeName = "Chuyến đi";
+                    if (date == null) date = "Chưa có ngày";
+                    if (price == null) price = "Chưa có giá";
+                    if (status == null) status = "Đã đặt";
+
+                    history.append("• ")
+                            .append(placeName)
+                            .append("\n")
+                            .append("Ngày: ")
+                            .append(date)
+                            .append("\n")
+                            .append("Giá: ")
+                            .append(price)
+                            .append("\n")
+                            .append("Trạng thái: ")
+                            .append(status)
+                            .append("\n\n");
+                }
+
+                txtBookingHistory.setText(history.toString().trim());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                txtBookingHistory.setText("Không thể tải lịch sử đặt vé");
             }
         });
     }

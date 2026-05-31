@@ -255,6 +255,37 @@
 
                 </LinearLayout>
 
+                <!-- BOOKING HISTORY CARD -->
+                <LinearLayout
+                    android:id="@+id/layoutBookingHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_profile_card"
+                    android:elevation="5dp"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lịch sử đặt vé"
+                        android:textColor="#1F1D4A"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:id="@+id/txtBookingHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chưa có lịch sử đặt vé"
+                        android:textColor="#777777"
+                        android:textSize="15sp"
+                        android:lineSpacingExtra="6dp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
