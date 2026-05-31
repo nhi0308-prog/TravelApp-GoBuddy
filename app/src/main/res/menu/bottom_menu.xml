@@ -6,6 +6,8 @@
         android:id="@+id/home"
         android:icon="@drawable/bottom_btn1"
         android:title="Home"
+        android:enabled="true"
+        android:visible="true"
         app:cnb_backgroundColor="@color/blue"
         app:cnb_iconColor="@color/white" />
 
@@ -13,6 +15,8 @@
         android:id="@+id/explorer"
         android:icon="@drawable/bottom_btn2"
         android:title="Explore"
+        android:enabled="true"
+        android:visible="true"
         app:cnb_backgroundColor="@color/blue"
         app:cnb_iconColor="@color/white" />
 
@@ -20,6 +24,8 @@
         android:id="@+id/bookmark"
         android:icon="@drawable/bottom_btn3"
         android:title="Saved"
+        android:enabled="true"
+        android:visible="true"
         app:cnb_backgroundColor="@color/blue"
         app:cnb_iconColor="@color/white" />
 
@@ -27,6 +33,8 @@
         android:id="@+id/profile"
         android:icon="@drawable/bottom_btn4"
         android:title="Profile"
+        android:enabled="true"
+        android:visible="true"
         app:cnb_backgroundColor="@color/blue"
         app:cnb_iconColor="@color/white" />
 
