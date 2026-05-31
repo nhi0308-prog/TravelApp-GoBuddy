@@ -34,6 +34,89 @@ public class TicketActivity extends AppCompatActivity {
     }
 
     private void setVariable() {
+        if (object == null) {
+            String placeName = getIntent().getStringExtra("placeName");
+            String date = getIntent().getStringExtra("date");
+            String price = getIntent().getStringExtra("price");
+            String status = getIntent().getStringExtra("status");
+            String imagePath = getIntent().getStringExtra("imagePath");
+
+            if (placeName == null) placeName = "Chuyến đi";
+            if (date == null) date = "Chưa có ngày";
+            if (price == null) price = "Chưa có giá";
+            if (status == null) status = "Đã đặt";
+            if (imagePath == null) imagePath = "";
+
+            binding.imageView9.setOnClickListener(v -> finish());
+
+            Glide.with(TicketActivity.this)
+                    .load(imagePath)
+                    .into(binding.imageView6);
+
+            binding.textView9.setText(placeName);
+            binding.txtDuration.setText(status);
+            binding.txtGuideNameTop.setText("GoBuddy Guide");
+            binding.txtGuideNameFinal.setText("GoBuddy Guide");
+            binding.txtTime.setText(date);
+            binding.txtGuest.setText(price);
+
+            Random random = new Random();
+
+            String randomOrderId = String.valueOf(100000 + random.nextInt(900000));
+            binding.txtOrderId.setText("Order Id:" + randomOrderId);
+
+            String randomBarcodeNumber = String.valueOf(100000000 + random.nextInt(900000000));
+            binding.textViewBarcodeNumber.setText(randomBarcodeNumber);
+
+            try {
+                Bitmap barcodeBitmap = generateBarcodeBitmap(randomBarcodeNumber, 400, 100);
+                binding.imgBarcode.setImageBitmap(barcodeBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            binding.btnChat.setOnClickListener(v -> {
+                Toast.makeText(this, "Không có số điện thoại hướng dẫn viên", Toast.LENGTH_SHORT).show();
+            });
+
+            binding.btnCall.setOnClickListener(v -> {
+                Toast.makeText(this, "Không có số điện thoại hướng dẫn viên", Toast.LENGTH_SHORT).show();
+            });
+
+            binding.btnDownload.setOnClickListener(v -> {
+                View targetView = (View) binding.imageView6.getParent();
+
+                try {
+                    Bitmap bitmap = Bitmap.createBitmap(targetView.getWidth(), targetView.getHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    targetView.draw(canvas);
+
+                    String fileName = "GoBuddy_Ticket_" + randomOrderId + ".png";
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/GoBuddy");
+                    }
+
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    if (uri != null) {
+                        OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        if (outputStream != null) outputStream.close();
+
+                        Toast.makeText(this, "Đã lưu vé vào Thư viện ảnh thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Lỗi khi tải vé: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return;
+        }
+
         // --- 1. XỬ LÝ LOAD HÌNH ẢNH BANNER
         String imageUri = "";
         if (object.getPics() != null && !object.getPics().isEmpty()) {
@@ -60,20 +143,18 @@ public class TicketActivity extends AppCompatActivity {
         binding.txtDuration.setText(object.getDuration());
         binding.txtGuideNameTop.setText(object.getGuideName());
         binding.txtGuideNameFinal.setText(object.getGuideName());
-        binding.txtTime.setText(object.getTimeTour()); // Sử dụng getTimeTour() từ object bạn set bên DetailActivity
+        binding.txtTime.setText(object.getTimeTour());
         binding.txtGuest.setText(String.valueOf(object.getTotalGuest()));
 
         // --- 3. ĐỔI DỮ LIỆU ĐỘNG: ORDER ID, MÃ VẠCH
         Random random = new Random();
-        // Tạo ngẫu nhiên 1 chuỗi số Order ID (Ví dụ gồm 6 chữ số)
+
         String randomOrderId = String.valueOf(100000 + random.nextInt(900000));
         binding.txtOrderId.setText("Order Id:" + randomOrderId);
 
-        // Tạo ngẫu nhiên 1 chuỗi số mã vạch (Ví dụ gồm 9 chữ số)
         String randomBarcodeNumber = String.valueOf(100000000 + random.nextInt(900000000));
         binding.textViewBarcodeNumber.setText(randomBarcodeNumber);
 
-        // Gọi hàm vẽ sọc mã vạch thời gian thực dựa trên chuỗi số vừa tạo ngẫu nhiên
         try {
             Bitmap barcodeBitmap = generateBarcodeBitmap(randomBarcodeNumber, 400, 100);
             binding.imgBarcode.setImageBitmap(barcodeBitmap);
@@ -99,12 +180,8 @@ public class TicketActivity extends AppCompatActivity {
 
         // --- 5. NÚT DOWNLOAD TICKET (CHỤP VÀ LƯU VÀO THƯ VIỆN ẢNH) ---
         binding.btnDownload.setOnClickListener(v -> {
-            // Chụp phần Layout Vé (Toàn bộ LinearLayout bên trong ScrollView trừ phần tiêu đề)
-            // Lấy View cha chứa nội dung vé để lưu thành ảnh
             View ticketView = binding.imageView6.getRootView();
 
-            // Ở đây ta sẽ chụp trực tiếp khu vực chứa nội dung vé chính
-            // Bạn có thể ép view cụ thể, ví dụ chụp lại phần LinearLayout nền trắng:
             View targetView = (View) binding.imageView6.getParent();
 
             try {
@@ -112,7 +189,6 @@ public class TicketActivity extends AppCompatActivity {
                 Canvas canvas = new Canvas(bitmap);
                 targetView.draw(canvas);
 
-                // Lưu bitmap vào Thư viện máy (Gallery) thông qua MediaStore
                 String fileName = "GoBuddy_Ticket_" + randomOrderId + ".png";
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
@@ -145,7 +221,6 @@ public class TicketActivity extends AppCompatActivity {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                // Điểm đen ứng với giá trị true, điểm trắng ứng với false
                 bitmap.setPixel(i, j, matrix.get(i, j) ? 0xFF000000 : 0xFFFFFFFF);
             }
         }

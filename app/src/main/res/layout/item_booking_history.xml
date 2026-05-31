@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutBookingItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="14dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/txtBookingPlaceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Phu Quoc Island"
+        android:textColor="#666666"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txtBookingDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ngày: 31/05/2026 (08:30 AM)"
+        android:textColor="#777777"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/txtBookingPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giá: $43"
+        android:textColor="#777777"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/txtBookingStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trạng thái: Đã đặt thành công"
+        android:textColor="#777777"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

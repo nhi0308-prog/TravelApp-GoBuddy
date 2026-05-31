@@ -398,10 +398,6 @@ public class DetailActivity extends AppCompatActivity {
         // BOOK TOUR
         // =====================================================
 
-        // =====================================================
-        // BOOK TOUR
-        // =====================================================
-
         binding.btnBook.setOnClickListener(view -> {
 
             // 1. Kiểm tra đăng nhập
@@ -460,6 +456,32 @@ public class DetailActivity extends AppCompatActivity {
             newBooking.put("price", "$" + totalPrice);
             newBooking.put("status", "Đã đặt thành công");
 
+            // ===== THÊM: LƯU ĐẦY ĐỦ THÔNG TIN VÉ ĐỂ LỊCH SỬ HIỂN THỊ ĐÚNG =====
+            String imagePath = "";
+
+            if (object.getPics() != null && !object.getPics().isEmpty()) {
+                imagePath = object.getPics().get(0);
+            } else if (object.getImagePath() != null) {
+                imagePath = object.getImagePath();
+            } else if (object.getPic() != null && !object.getPic().isEmpty()) {
+                imagePath = object.getPic().get(0);
+            }
+
+            java.util.Random random = new java.util.Random();
+            String orderId = String.valueOf(100000 + random.nextInt(900000));
+            String barcodeNumber = String.valueOf(100000000 + random.nextInt(900000000));
+
+            newBooking.put("bookingId", bookingId);
+            newBooking.put("imagePath", imagePath);
+            newBooking.put("guideName", object.getGuideName());
+            newBooking.put("guidePhone", object.getTourGuidePhone());
+            newBooking.put("duration", object.getDuration());
+            newBooking.put("totalGuest", String.valueOf(object.getTotalGuest()));
+            newBooking.put("timeTour", selectedTime[0]);
+            newBooking.put("orderId", orderId);
+            newBooking.put("barcodeNumber", barcodeNumber);
+            // ===== HẾT PHẦN THÊM =====
+
             if (bookingId != null) {
                 bookingRef.child(userId).child(bookingId).setValue(newBooking);
             }
@@ -474,7 +496,8 @@ public class DetailActivity extends AppCompatActivity {
             intent.putExtra("object", object);
 
             startActivity(intent);
-        });}
+        });
+    }
 
     // =====================================================
     // CẬP NHẬT ICON TIM

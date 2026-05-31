@@ -134,7 +134,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
                     </LinearLayout>
 
                     <!-- TÊN -->
@@ -160,7 +159,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
                     </LinearLayout>
 
                     <!-- NGÀY SINH -->
@@ -186,7 +184,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
                     </LinearLayout>
 
                     <!-- ĐỊA CHỈ -->
@@ -212,7 +209,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
                     </LinearLayout>
 
                     <!-- TRẠNG THÁI -->
@@ -237,7 +233,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
                     </LinearLayout>
 
                     <!-- ĐĂNG XUẤT -->
@@ -275,14 +270,20 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvBookingHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
                     <TextView
-                        android:id="@+id/txtBookingHistory"
+                        android:id="@+id/txtNoBooking"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Chưa có lịch sử đặt vé"
                         android:textColor="#777777"
                         android:textSize="15sp"
-                        android:lineSpacingExtra="6dp" />
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
