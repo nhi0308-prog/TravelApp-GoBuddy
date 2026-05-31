@@ -32,7 +32,7 @@
             android:orientation="horizontal"
             android:scrollbars="none" />
 
-        <!-- EXPLORE TOUR LIST -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvExploreTours"
             android:layout_width="match_parent"
