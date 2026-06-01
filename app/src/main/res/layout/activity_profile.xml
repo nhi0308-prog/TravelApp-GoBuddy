@@ -135,6 +135,20 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
+
+                        <EditText
+                            android:id="@+id/edtLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="#F4F2FA"
+                            android:hint="Nhập họ"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#222222"
+                            android:textColorHint="#999999"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <!-- TÊN -->
@@ -160,6 +174,20 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
+
+                        <EditText
+                            android:id="@+id/edtFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="#F4F2FA"
+                            android:hint="Nhập tên"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#222222"
+                            android:textColorHint="#999999"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <!-- NGÀY SINH -->
@@ -185,6 +213,22 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
+
+                        <!-- THÊM: Ô nhập ngày sinh -->
+                        <EditText
+                            android:id="@+id/edtBirthday"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="#F4F2FA"
+                            android:hint="Ví dụ: 3/8/2004"
+                            android:inputType="date"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#222222"
+                            android:textColorHint="#999999"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <!-- ĐỊA CHỈ -->
@@ -210,6 +254,20 @@
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginTop="6dp"
+                            android:background="#F4F2FA"
+                            android:hint="Nhập địa chỉ"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#222222"
+                            android:textColorHint="#999999"
+                            android:textSize="15sp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <!-- TRẠNG THÁI -->
@@ -236,12 +294,39 @@
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
 
-                    <!-- ĐĂNG XUẤT -->
+                    <!-- CHỈNH SỬA -->
+                    <Button
+                        android:id="@+id/btnEditProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/bg_logout_button"
+                        android:text="Chỉnh sửa thông tin"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                    <Button
+                        android:id="@+id/btnSaveProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_logout_button"
+                        android:text="Lưu thay đổi"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+
                     <Button
                         android:id="@+id/btnLogout"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="12dp"
                         android:background="@drawable/bg_logout_button"
                         android:text="Đăng xuất"
                         android:textAllCaps="false"
@@ -251,7 +336,6 @@
 
                 </LinearLayout>
 
-                <!-- BOOKING HISTORY CARD -->
                 <LinearLayout
                     android:id="@+id/layoutBookingHistory"
                     android:layout_width="match_parent"
@@ -297,7 +381,7 @@
 
     </ScrollView>
 
-    <!-- BOTTOM NAVIGATION MENU -->
+
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
