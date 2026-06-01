@@ -1,6 +1,5 @@
 package com.midterm.travelapp_gobuddy;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 
 public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHolder> {
     private final ArrayList<PlaceGoModel> items;
-    private Context context;
 
     public PlaceGoAdapter(ArrayList<PlaceGoModel> items) {
         this.items = items != null ? items : new ArrayList<>();
@@ -24,9 +22,8 @@ public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         ViewholderPopularBinding binding = ViewholderPopularBinding.inflate(
-                LayoutInflater.from(context), parent, false);
+                LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
@@ -45,11 +42,13 @@ public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHold
                 .into(holder.binding.pic);
 
         // Mở màn hình chi tiết khi người dùng chọn một địa điểm
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), PlaceGoDetailActivity.class);
-            intent.putExtra("object_place", item);
-            v.getContext().startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> openPlaceDetail(holder, item));
+    }
+
+    private void openPlaceDetail(ViewHolder holder, PlaceGoModel item) {
+        Intent intent = new Intent(holder.itemView.getContext(), PlaceGoDetailActivity.class);
+        intent.putExtra("object_place", item);
+        holder.itemView.getContext().startActivity(intent);
     }
 
     @Override
