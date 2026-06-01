@@ -70,21 +70,15 @@ public class DetailActivity extends AppCompatActivity {
 
         final int[] guestCount = {1};
 
-        // Giá gốc cho 1 người
         final int basePrice = object.getPrice();
 
-        // Hiển thị số lượng khách mặc định
         binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
 
-        // Hàm cập nhật tổng giá
         Runnable updateTotalPrice = () -> {
-
             int totalPrice = basePrice * guestCount[0];
-
             binding.priceTxt.setText("$" + totalPrice);
         };
 
-        // Hiển thị giá ban đầu
         updateTotalPrice.run();
 
         // =====================================================
@@ -149,15 +143,16 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
 
-// =====================================================
-// SWIPE TRÁI/PHẢI ĐỔI ẢNH CHÍNH
-// =====================================================
+            // =====================================================
+            // SWIPE TRÁI/PHẢI ĐỔI ẢNH CHÍNH
+            // =====================================================
+
             binding.pic.setOnTouchListener(new View.OnTouchListener() {
 
                 private float startX = 0;
                 private float startY = 0;
                 private boolean isSwiping = false;
-                private static final int SWIPE_THRESHOLD = 40; // giảm từ 80 → 40
+                private static final int SWIPE_THRESHOLD = 40;
                 private static final int SWIPE_VELOCITY = 5;
 
                 @Override
@@ -176,13 +171,11 @@ public class DetailActivity extends AppCompatActivity {
                             float moveX = event.getX() - startX;
                             float moveY = event.getY() - startY;
 
-                            // Xác định swipe ngang sớm
                             if (!isSwiping && Math.abs(moveX) > Math.abs(moveY)
                                     && Math.abs(moveX) > SWIPE_VELOCITY) {
                                 isSwiping = true;
                             }
 
-                            // Kéo ảnh theo ngón tay realtime
                             if (isSwiping) {
                                 binding.pic.setTranslationX(moveX * 0.4f);
                                 v.getParent().requestDisallowInterceptTouchEvent(true);
@@ -217,7 +210,7 @@ public class DetailActivity extends AppCompatActivity {
                                 binding.pic.animate()
                                         .translationX(slideOut)
                                         .alpha(0f)
-                                        .setDuration(150) // giảm từ 200 → 150
+                                        .setDuration(150)
                                         .withEndAction(() -> {
                                             updateMainImage.run();
                                             binding.pic.setTranslationX(-slideOut * 0.6f);
@@ -230,7 +223,6 @@ public class DetailActivity extends AppCompatActivity {
                                         }).start();
 
                             } else {
-                                // Không đủ swipe → trả ảnh về vị trí cũ
                                 binding.pic.animate()
                                         .translationX(0f)
                                         .alpha(1f)
@@ -252,38 +244,31 @@ public class DetailActivity extends AppCompatActivity {
             binding.thumbScroll.setVisibility(View.GONE);
         }
 
-        if (object.getDuration() != null &&
-                !object.getDuration().isEmpty()) {
+        // =====================================================
+        // DURATION
+        // =====================================================
 
+        if (object.getDuration() != null && !object.getDuration().isEmpty()) {
             binding.txtDurationDetail.setText(object.getDuration());
-
         } else {
-
             binding.txtDurationDetail.setText("Chưa cập nhật");
         }
+
+        // =====================================================
+        // TĂNG GIẢM SỐ KHÁCH
+        // =====================================================
+
         binding.btnMinusGuest.setOnClickListener(v -> {
-
             if (guestCount[0] > 1) {
-
                 guestCount[0]--;
-
-                binding.txtGuestCount.setText(
-                        String.valueOf(guestCount[0])
-                );
-
-                // cập nhật giá
+                binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
                 updateTotalPrice.run();
             }
         });
+
         binding.btnPlusGuest.setOnClickListener(v -> {
-
             guestCount[0]++;
-
-            binding.txtGuestCount.setText(
-                    String.valueOf(guestCount[0])
-            );
-
-            // cập nhật giá
+            binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
             updateTotalPrice.run();
         });
 
@@ -298,32 +283,16 @@ public class DetailActivity extends AppCompatActivity {
             android.app.TimePickerDialog timePickerDialog =
                     new android.app.TimePickerDialog(
                             this,
-
                             (view1, hourOfDay, minute) -> {
 
-                                String amPm =
-                                        (hourOfDay >= 12) ? " PM" : " AM";
+                                String amPm = (hourOfDay >= 12) ? " PM" : " AM";
+                                int hour = (hourOfDay > 12) ? hourOfDay - 12 : hourOfDay;
+                                if (hour == 0) hour = 12;
 
-                                int hour =
-                                        (hourOfDay > 12)
-                                                ? hourOfDay - 12
-                                                : hourOfDay;
-
-                                if (hour == 0) {
-                                    hour = 12;
-                                }
-
-                                selectedTime[0] =
-                                        String.format("%02d:%02d%s", hour, minute, amPm);
-
-                                binding.btnSelectTime.setText(
-                                        selectedTime[0]
-                                );
+                                selectedTime[0] = String.format("%02d:%02d%s", hour, minute, amPm);
+                                binding.btnSelectTime.setText(selectedTime[0]);
                             },
-
-                            8,
-                            30,
-                            false
+                            8, 30, false
                     );
 
             timePickerDialog.show();
@@ -351,173 +320,159 @@ public class DetailActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance()
                 .getReference("Guides")
-                .addListenerForSingleValueEvent(
-                        new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
 
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
 
-                                guideNames.clear();
-                                guidePhones.clear();
+                        guideNames.clear();
+                        guidePhones.clear();
 
-                                for (DataSnapshot data :
-                                        snapshot.getChildren()) {
+                        for (DataSnapshot data : snapshot.getChildren()) {
 
-                                    ItemModel guideObject =
-                                            data.getValue(ItemModel.class);
+                            ItemModel guideObject = data.getValue(ItemModel.class);
 
-                                    if (guideObject != null) {
-
-                                        guideNames.add(
-                                                guideObject.getGuideName()
-                                        );
-
-                                        guidePhones.add(
-                                                guideObject.getTourGuidePhone()
-                                        );
-                                    }
-                                }
-
-                                // dữ liệu dự phòng
-                                if (guideNames.isEmpty()) {
-
-                                    guideNames.add("Emily Waston");
-                                    guidePhones.add("0905123456");
-                                    guideNames.add("Jean Dupont");
-                                    guidePhones.add("0905789123");
-                                    guideNames.add("Alexandre Nguyen");
-                                    guidePhones.add("0914111222");
-                                    guideNames.add("Marie Curie");
-                                    guidePhones.add("0935333444");
-                                }
-
-                                spinnerAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-
-                                Log.e(
-                                        "FirebaseError",
-                                        error.getMessage()
-                                );
+                            if (guideObject != null) {
+                                guideNames.add(guideObject.getGuideName());
+                                guidePhones.add(guideObject.getTourGuidePhone());
                             }
                         }
-                );
+
+                        if (guideNames.isEmpty()) {
+                            guideNames.add("Emily Waston");
+                            guidePhones.add("0905123456");
+                            guideNames.add("Jean Dupont");
+                            guidePhones.add("0905789123");
+                            guideNames.add("Alexandre Nguyen");
+                            guidePhones.add("0914111222");
+                            guideNames.add("Marie Curie");
+                            guidePhones.add("0935333444");
+                        }
+
+                        spinnerAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Log.e("FirebaseError", error.getMessage());
+                    }
+                });
 
         // =====================================================
         // FAVORITE TOUR
         // =====================================================
 
-        String tourKey =
-                object.getTitle()
-                        .replaceAll("[^a-zA-Z0-9]", "_");
+        String tourKey = object.getTitle().replaceAll("[^a-zA-Z0-9]", "_");
 
-        DatabaseReference favRef =
+        DatabaseReference favInfoRef =
                 FirebaseDatabase.getInstance()
                         .getReference("Favorites")
+                        .child("info")
+                        .child(tourKey);
+
+        DatabaseReference favBookingRef =
+                FirebaseDatabase.getInstance()
+                        .getReference("Favorites")
+                        .child("booking")
                         .child(tourKey);
 
         final boolean[] isFavorited = {false};
 
         // Kiểm tra trạng thái favorite
-        favRef.addListenerForSingleValueEvent(
-                new ValueEventListener() {
+        favInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                isFavorited[0] = snapshot.exists();
+                updateHeartIcon(isFavorited[0]);
+            }
 
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-
-                        isFavorited[0] = snapshot.exists();
-
-                        updateHeartIcon(isFavorited[0]);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-
-                        Log.e(
-                                "DetailActivity",
-                                error.getMessage()
-                        );
-                    }
-                }
-        );
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("DetailActivity", error.getMessage());
+            }
+        });
 
         // Click icon tim
         binding.imageView5.setOnClickListener(v -> {
 
             isFavorited[0] = !isFavorited[0];
 
-            // Hiệu ứng nổi bong bóng
+            // Hiệu ứng bong bóng
             v.animate()
-                    .scaleX(1.4f)
-                    .scaleY(1.4f)
-                    .setDuration(120)
+                    .scaleX(1.4f).scaleY(1.4f).setDuration(120)
                     .withEndAction(() ->
                             v.animate()
-                                    .scaleX(0.85f)
-                                    .scaleY(0.85f)
-                                    .setDuration(80)
+                                    .scaleX(0.85f).scaleY(0.85f).setDuration(80)
                                     .withEndAction(() ->
                                             v.animate()
-                                                    .scaleX(1.1f)
-                                                    .scaleY(1.1f)
-                                                    .setDuration(60)
+                                                    .scaleX(1.1f).scaleY(1.1f).setDuration(60)
                                                     .withEndAction(() ->
                                                             v.animate()
-                                                                    .scaleX(1.0f)
-                                                                    .scaleY(1.0f)
-                                                                    .setDuration(50)
-                                                                    .start()
+                                                                    .scaleX(1.0f).scaleY(1.0f)
+                                                                    .setDuration(50).start()
                                                     ).start()
                                     ).start()
                     ).start();
 
             if (isFavorited[0]) {
 
-                favRef.setValue(object)
+                // Lưu info
+                java.util.HashMap<String, Object> infoMap = new java.util.HashMap<>();
+                infoMap.put("Id", object.getId());
+                infoMap.put("ImagePath", object.getImagePath());
+                infoMap.put("address", object.getAddress());
+                infoMap.put("category", object.getCategory());
+                infoMap.put("description", object.getDescription());
+                infoMap.put("duration", object.getDuration());
+                infoMap.put("pics", object.getPics());
+                infoMap.put("price", object.getPrice());
+                infoMap.put("score", object.getScore());
+                infoMap.put("title", object.getTitle());
+                favInfoRef.setValue(infoMap)
                         .addOnSuccessListener(unused ->
-                                Toast.makeText(
-                                        this,
-                                        "Đã lưu",
-                                        Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this, "Đã lưu", Toast.LENGTH_SHORT).show()
                         )
                         .addOnFailureListener(e ->
-                                Toast.makeText(
-                                        this,
-                                        "Lỗi lưu",
-                                        Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this, "Lỗi lưu", Toast.LENGTH_SHORT).show()
                         );
 
+                // Lưu booking
+                java.util.HashMap<String, Object> bookingMap = new java.util.HashMap<>();
+                bookingMap.put("timeTour", selectedTime[0]);
+                bookingMap.put("totalGuest", guestCount[0]);
+                bookingMap.put("guideName", object.getGuideName());
+                bookingMap.put("guidePhone", object.getTourGuidePhone());
+                favBookingRef.setValue(bookingMap);
+
             } else {
-                favRef.removeValue()
+
+                favInfoRef.removeValue();
+                favBookingRef.removeValue()
                         .addOnSuccessListener(unused ->
-                                Toast.makeText(
-                                        this,
-                                        "Đã xóa khỏi Favorites",
-                                        Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this, "Đã xóa khỏi Favorites", Toast.LENGTH_SHORT).show()
                         )
                         .addOnFailureListener(e ->
-                                Toast.makeText(
-                                        this,
-                                        "Lỗi xóa Favorites",
-                                        Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this, "Lỗi xóa Favorites", Toast.LENGTH_SHORT).show()
                         );
             }
+
             updateHeartIcon(isFavorited[0]);
         });
+
+        // =====================================================
+        // BOOK TOUR
+        // =====================================================
+
         binding.btnBook.setOnClickListener(view -> {
 
             // 1. Kiểm tra đăng nhập
-            com.google.firebase.auth.FirebaseAuth mAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
+            com.google.firebase.auth.FirebaseAuth mAuth =
+                    com.google.firebase.auth.FirebaseAuth.getInstance();
             com.google.firebase.auth.FirebaseUser currentUser = mAuth.getCurrentUser();
 
             if (currentUser == null) {
-                Toast.makeText(DetailActivity.this, "Vui lòng đăng nhập để đặt tour!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this,
+                        "Vui lòng đăng nhập để đặt tour!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -525,21 +480,10 @@ public class DetailActivity extends AppCompatActivity {
 
             // 2. Lấy guide được chọn
             if (!guideNames.isEmpty()) {
-
-                int selectedIndex =
-                        binding.spinnerGuides
-                                .getSelectedItemPosition();
-
-                object.setGuideName(
-                        guideNames.get(selectedIndex)
-                );
-
-                object.setTourGuidePhone(
-                        guidePhones.get(selectedIndex)
-                );
-
+                int selectedIndex = binding.spinnerGuides.getSelectedItemPosition();
+                object.setGuideName(guideNames.get(selectedIndex));
+                object.setTourGuidePhone(guidePhones.get(selectedIndex));
             } else {
-
                 object.setGuideName("Emily Waston");
                 object.setTourGuidePhone("0905123456");
             }
@@ -547,22 +491,25 @@ public class DetailActivity extends AppCompatActivity {
             // 3. Gán dữ liệu booking
             object.setTimeTour(selectedTime[0]);
             object.setTotalGuest(guestCount[0]);
-            object.setDuration(
-                    binding.txtDurationDetail
-                            .getText()
-                            .toString()
-            );
+            object.setDuration(binding.txtDurationDetail.getText().toString());
 
             int totalPrice = basePrice * guestCount[0];
             object.setPrice(totalPrice);
-            DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("Bookings");
+
+            // 4. Lưu booking lên Firebase
+            DatabaseReference bookingRef =
+                    FirebaseDatabase.getInstance().getReference("Bookings");
             String bookingId = bookingRef.child(userId).push().getKey();
+
             java.util.HashMap<String, String> newBooking = new java.util.HashMap<>();
             newBooking.put("placeName", object.getTitle());
-            String currentDate = android.text.format.DateFormat.format("dd/MM/yyyy", new java.util.Date()).toString();
+
+            String currentDate = android.text.format.DateFormat
+                    .format("dd/MM/yyyy", new java.util.Date()).toString();
             newBooking.put("date", currentDate + " (" + selectedTime[0] + ")");
             newBooking.put("price", "$" + totalPrice);
             newBooking.put("status", "Đã đặt thành công");
+
             String imagePath = "";
             if (object.getPics() != null && !object.getPics().isEmpty()) {
                 imagePath = object.getPics().get(0);
@@ -585,36 +532,43 @@ public class DetailActivity extends AppCompatActivity {
             newBooking.put("timeTour", selectedTime[0]);
             newBooking.put("orderId", orderId);
             newBooking.put("barcodeNumber", barcodeNumber);
-            // ===== HẾT PHẦN THÊM =====
 
             if (bookingId != null) {
                 bookingRef.child(userId).child(bookingId).setValue(newBooking);
             }
 
-            // 5. Chuyển sang TicketActivity ngay lập tức
-            Intent intent =
-                    new Intent(
-                            DetailActivity.this,
-                            TicketActivity.class
-                    );
-
+            // 5. Chuyển sang TicketActivity
+            Intent intent = new Intent(DetailActivity.this, TicketActivity.class);
             intent.putExtra("object", object);
-
             startActivity(intent);
         });
     }
+
     private void updateHeartIcon(boolean isFavorited) {
 
         if (isFavorited) {
 
-            binding.imageView5.setColorFilter(
-                    Color.RED,
-                    PorterDuff.Mode.SRC_IN
-            );
+            binding.imageView5.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+
+            binding.imageView5.animate()
+                    .scaleX(1.3f).scaleY(1.3f).setDuration(150)
+                    .withEndAction(() ->
+                            binding.imageView5.animate()
+                                    .scaleX(1.0f).scaleY(1.0f)
+                                    .setDuration(150).start()
+                    ).start();
 
         } else {
 
             binding.imageView5.clearColorFilter();
+
+            binding.imageView5.animate()
+                    .scaleX(0.85f).scaleY(0.85f).setDuration(100)
+                    .withEndAction(() ->
+                            binding.imageView5.animate()
+                                    .scaleX(1.0f).scaleY(1.0f)
+                                    .setDuration(100).start()
+                    ).start();
         }
     }
 }

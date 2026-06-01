@@ -69,17 +69,49 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     private void loadFavorites() {
-        FirebaseDatabase.getInstance().getReference("Favorites")
+        FirebaseDatabase.getInstance()
+                .getReference("Favorites")
+                .child("info")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         favoriteList.clear();
 
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            ItemModel item = data.getValue(ItemModel.class);
-                            if (item != null) {
-                                favoriteList.add(item);
+                        for (DataSnapshot infoSnapshot : snapshot.getChildren()) {
+
+                            ItemModel item = new ItemModel();
+
+                            item.setTitle(infoSnapshot.child("title").getValue(String.class));
+                            item.setAddress(infoSnapshot.child("address").getValue(String.class));
+                            item.setDescription(infoSnapshot.child("description").getValue(String.class));
+                            item.setCategory(infoSnapshot.child("category").getValue(String.class));
+                            item.setDuration(infoSnapshot.child("duration").getValue(String.class));
+
+                            Double score = infoSnapshot.child("score").getValue(Double.class);
+                            if (score != null) item.setScore(score);
+
+                            Integer price = infoSnapshot.child("price").getValue(Integer.class);
+                            if (price != null) item.setPrice(price);
+
+                            Integer id = infoSnapshot.child("Id").getValue(Integer.class);
+                            if (id != null) item.setId(id);
+
+                            String imagePath = infoSnapshot.child("ImagePath").getValue(String.class);
+                            item.setImagePath(imagePath);
+
+                            ArrayList<String> pics = new ArrayList<>();
+                            for (DataSnapshot picSnap : infoSnapshot.child("pics").getChildren()) {
+                                String pic = picSnap.getValue(String.class);
+                                if (pic != null) pics.add(pic);
                             }
+                            if (!pics.isEmpty()) {
+                                item.setPics(pics);
+                            } else if (imagePath != null) {
+                                pics.add(imagePath);
+                                item.setPics(pics);
+                            }
+
+                            favoriteList.add(item);
                         }
 
                         if (favoriteList.isEmpty()) {
@@ -88,8 +120,6 @@ public class FavoriteActivity extends AppCompatActivity {
                         } else {
                             emptyLayout.setVisibility(View.GONE);
                             favoriteRecyclerView.setVisibility(View.VISIBLE);
-
-                            // Dùng PopularAdapter có sẵn trong project
                             PopularAdapter adapter = new PopularAdapter(favoriteList);
                             favoriteRecyclerView.setAdapter(adapter);
                         }
