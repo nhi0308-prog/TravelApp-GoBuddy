@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/backBtn"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:padding="10dp"
             android:background="@drawable/back_btn_bg"
             android:elevation="4dp"

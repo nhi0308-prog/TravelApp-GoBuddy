@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.*;
 import com.midterm.travelapp_gobuddy.databinding.ActivityExploreBinding;
+
 import java.util.ArrayList;
 
 public class ExploreActivity extends AppCompatActivity {
@@ -27,6 +30,9 @@ public class ExploreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityExploreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        binding.btnBack.setOnClickListener(v -> finish());
 
         // Khởi tạo danh sách danh mục trước
         categories.add("Beach");
@@ -95,7 +101,6 @@ public class ExploreActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        // ĐÃ SỬA: Lọc động theo vị trí đang được chọn (phòng trường hợp mạng chậm)
                         if (!categories.isEmpty()) {
                             filterTours(categories.get(selectedPosition));
                         }
@@ -119,7 +124,6 @@ public class ExploreActivity extends AppCompatActivity {
             }
         }
 
-        // ĐÃ SỬA: Không tự động addAll() khi trống nữa. Thay vào đó ẩn/hiện thông báo trống nếu muốn.
         if (filteredPlaces.isEmpty()) {
             // Bạn có thể thêm một cái txtNoData.setVisibility(View.VISIBLE) ở đây nếu có view thông báo
             binding.rvExploreTours.setVisibility(View.GONE);
@@ -142,8 +146,6 @@ public class ExploreActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Mẹo: Nên tạo 1 file XML item_category.xml riêng để thiết kế giao diện đẹp hơn.
-            // Đoạn này giữ nguyên cấu trúc cũ của bạn nhưng tối ưu hóa padding.
             TextView textView = new TextView(parent.getContext());
             textView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
