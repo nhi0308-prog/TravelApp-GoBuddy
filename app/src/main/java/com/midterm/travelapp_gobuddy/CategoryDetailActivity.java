@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class CategoryDetailActivity extends AppCompatActivity {
 
     private static final int GRID_SPAN_COUNT = 2;
+    private static final String DEFAULT_CATEGORY = "Hotel";
 
     private TextView txtCategoryTitle;
     private TextView btnBack;
@@ -36,8 +37,10 @@ public class CategoryDetailActivity extends AppCompatActivity {
         // Get selected category from Home screen
         String categoryName = getIntent().getStringExtra("category_name");
 
-        if (categoryName == null) {
-            categoryName = "Hotel";
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            categoryName = DEFAULT_CATEGORY;
+        } else {
+            categoryName = categoryName.trim();
         }
 
         txtCategoryTitle.setText(categoryName);
@@ -80,6 +83,13 @@ public class CategoryDetailActivity extends AppCompatActivity {
             placeList.add(new CategoryPlace(R.drawable.food6, "Com Tam", 4.4f));
             placeList.add(new CategoryPlace(R.drawable.food7, "Beef Noodle Soup", 4.7f));
             placeList.add(new CategoryPlace(R.drawable.food8, "Grilled Seafood", 4.8f));
+
+        } else {
+            txtCategoryTitle.setText(DEFAULT_CATEGORY);
+            placeList.add(new CategoryPlace(R.drawable.hotel1, "Luxury Beach Hotel", 5.0f));
+            placeList.add(new CategoryPlace(R.drawable.hotel2, "Mountain View Resort", 4.5f));
+            placeList.add(new CategoryPlace(R.drawable.hotel3, "City Center Hotel", 4.0f));
+            placeList.add(new CategoryPlace(R.drawable.hotel4, "Sunset Paradise Hotel", 4.5f));
         }
 
         // Display category items in a 2-column grid
