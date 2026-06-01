@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,13 +20,21 @@ import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FavoriteActivity extends AppCompatActivity {
 
     private RecyclerView favoriteRecyclerView;
     private LinearLayout emptyLayout;
     private ImageView backBtn;
+    private TextView btnDeleteMode;
     private ArrayList<ItemModel> favoriteList = new ArrayList<>();
+
+    // Chế độ chọn để xóa
+    private boolean isSelectionMode = false;
+    private Set<Integer> selectedPositions = new HashSet<>();
+    private FavoriteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,36 +44,50 @@ public class FavoriteActivity extends AppCompatActivity {
         favoriteRecyclerView = findViewById(R.id.favoriteRecyclerView);
         emptyLayout = findViewById(R.id.emptyLayout);
         backBtn = findViewById(R.id.backBtn);
+        btnDeleteMode = findViewById(R.id.btnDeleteMode);
 
-        // THÊM BOTTOM MENU
+        // BOTTOM MENU
         ChipNavigationBar bottomMenu = findViewById(R.id.bottomMenu);
         bottomMenu.setItemSelected(R.id.bookmark, true);
 
         bottomMenu.setOnItemSelectedListener(id -> {
             if (id == R.id.home) {
-                Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(FavoriteActivity.this, MainActivity.class));
                 finish();
-
             } else if (id == R.id.explorer) {
-                Intent intent = new Intent(FavoriteActivity.this, ExploreActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(FavoriteActivity.this, ExploreActivity.class));
                 finish();
-
-            } else if (id == R.id.bookmark) {
-                // Đang ở trang Saved nên không làm gì
-
             } else if (id == R.id.profile) {
-                Intent intent = new Intent(FavoriteActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(FavoriteActivity.this, ProfileActivity.class));
                 finish();
             }
         });
 
-        backBtn.setOnClickListener(v -> finish());
+        // Nút back
+        backBtn.setOnClickListener(v -> {
+            if (isSelectionMode) {
+                exitSelectionMode();
+            } else {
+                finish();
+            }
+        });
+
+        // Nút thùng rác
+        btnDeleteMode.setOnClickListener(v -> {
+            if (!isSelectionMode) {
+                // Vào chế độ chọn
+                enterSelectionMode();
+            } else {
+                // Đang chọn → xóa hoặc thoát
+                if (!selectedPositions.isEmpty()) {
+                    deleteSelectedItems();
+                } else {
+                    exitSelectionMode();
+                }
+            }
+        });
 
         favoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         loadFavorites();
     }
 
@@ -120,7 +143,25 @@ public class FavoriteActivity extends AppCompatActivity {
                         } else {
                             emptyLayout.setVisibility(View.GONE);
                             favoriteRecyclerView.setVisibility(View.VISIBLE);
-                            PopularAdapter adapter = new PopularAdapter(favoriteList);
+
+                            adapter = new FavoriteAdapter(
+                                    favoriteList,
+                                    // Click thường
+                                    (item, position) -> {
+                                        if (isSelectionMode) {
+                                            toggleSelection(position);
+                                        } else {
+                                            Intent intent = new Intent(FavoriteActivity.this, DetailActivity.class);
+                                            intent.putExtra("object", item);
+                                            startActivity(intent);
+                                        }
+                                    },
+                                    // Long press
+                                    (item, position) -> {
+                                        if (!isSelectionMode) enterSelectionMode();
+                                        toggleSelection(position);
+                                    }
+                            );
                             favoriteRecyclerView.setAdapter(adapter);
                         }
                     }
@@ -130,5 +171,58 @@ public class FavoriteActivity extends AppCompatActivity {
                         Log.e("FavoriteActivity", error.getMessage());
                     }
                 });
+    }
+
+    private void enterSelectionMode() {
+        isSelectionMode = true;
+        btnDeleteMode.setTextColor(0xFFFF3B30); // đỏ khi đang chọn
+        if (adapter != null) adapter.setSelectionMode(true);
+    }
+
+    private void exitSelectionMode() {
+        isSelectionMode = false;
+        selectedPositions.clear();
+        btnDeleteMode.setTextColor(0xFF1A1A1A); // về màu bình thường
+        if (adapter != null) {
+            adapter.setSelectionMode(false);
+            adapter.clearSelection();
+        }
+    }
+
+    private void toggleSelection(int position) {
+        if (selectedPositions.contains(position)) {
+            selectedPositions.remove(position);
+        } else {
+            selectedPositions.add(position);
+        }
+        if (adapter != null) {
+            adapter.setSelectedPositions(selectedPositions);
+        }
+        if (selectedPositions.isEmpty()) {
+            exitSelectionMode();
+        }
+    }
+
+    private void deleteSelectedItems() {
+        for (int pos : selectedPositions) {
+            if (pos < favoriteList.size()) {
+                String tourKey = favoriteList.get(pos).getTitle()
+                        .replaceAll("[^a-zA-Z0-9]", "_");
+
+                FirebaseDatabase.getInstance()
+                        .getReference("Favorites")
+                        .child("info")
+                        .child(tourKey)
+                        .removeValue();
+
+                FirebaseDatabase.getInstance()
+                        .getReference("Favorites")
+                        .child("booking")
+                        .child(tourKey)
+                        .removeValue();
+            }
+        }
+        Toast.makeText(this, "Đã xóa " + selectedPositions.size() + " tour", Toast.LENGTH_SHORT).show();
+        exitSelectionMode();
     }
 }
