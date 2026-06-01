@@ -437,11 +437,22 @@ public class DetailActivity extends AppCompatActivity {
                         );
 
                 // Lưu booking
+                // Lưu booking
                 java.util.HashMap<String, Object> bookingMap = new java.util.HashMap<>();
                 bookingMap.put("timeTour", selectedTime[0]);
                 bookingMap.put("totalGuest", guestCount[0]);
-                bookingMap.put("guideName", object.getGuideName());
-                bookingMap.put("guidePhone", object.getTourGuidePhone());
+
+// Lấy guide đang được chọn trong spinner
+                String selectedGuideName = "Emily Waston"; // giá trị mặc định
+
+                if (!guideNames.isEmpty()) {
+                    int pos = binding.spinnerGuides.getSelectedItemPosition();
+                    if (pos >= 0 && pos < guideNames.size()) {
+                        selectedGuideName = guideNames.get(pos);
+                    }
+                }
+
+                bookingMap.put("guideName", selectedGuideName);
                 favBookingRef.setValue(bookingMap);
 
             } else {
