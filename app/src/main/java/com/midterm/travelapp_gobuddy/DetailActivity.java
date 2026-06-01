@@ -70,7 +70,10 @@ public class DetailActivity extends AppCompatActivity {
         // =====================================================
 
         final int[] guestCount = {1};
-
+        if (object.getTotalGuest() > 0) {
+            guestCount[0] = object.getTotalGuest();
+            binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
+        }
         final int basePrice = object.getPrice();
 
         binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
@@ -425,6 +428,7 @@ public class DetailActivity extends AppCompatActivity {
                         ? guideNames.get(binding.spinnerGuides.getSelectedItemPosition())
                         : "Emily Waston";
                 infoMap.put("guideName", savedGuideName);
+                infoMap.put("totalGuest", guestCount[0]);
                 favInfoRef.setValue(infoMap)
                         .addOnSuccessListener(unused ->
                                 Toast.makeText(this, "Đã lưu", Toast.LENGTH_SHORT).show()

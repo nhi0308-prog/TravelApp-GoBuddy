@@ -91,7 +91,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 for (DataSnapshot infoSnapshot : snapshot.getChildren()) {
                     ItemModel item = new ItemModel();
 
-<<<<<<< HEAD
+
                             item.setTitle(infoSnapshot.child("title").getValue(String.class));
                             item.setAddress(infoSnapshot.child("address").getValue(String.class));
                             item.setDescription(infoSnapshot.child("description").getValue(String.class));
@@ -102,24 +102,25 @@ public class FavoriteActivity extends AppCompatActivity {
 
                             String guideName = infoSnapshot.child("guideName").getValue(String.class);
                             if (guideName != null) item.setGuideName(guideName);
+                    Integer totalGuest = infoSnapshot.child("totalGuest").getValue(Integer.class);
+                    if (totalGuest != null) item.setTotalGuest(totalGuest);
                             Double score = infoSnapshot.child("score").getValue(Double.class);
                             if (score != null) item.setScore(score);
-=======
+
                     item.setTitle(infoSnapshot.child("title").getValue(String.class));
                     item.setAddress(infoSnapshot.child("address").getValue(String.class));
                     item.setDescription(infoSnapshot.child("description").getValue(String.class));
                     item.setCategory(infoSnapshot.child("category").getValue(String.class));
                     item.setDuration(infoSnapshot.child("duration").getValue(String.class));
 
-                    Double score = infoSnapshot.child("score").getValue(Double.class);
-                    if (score != null) item.setScore(score);
->>>>>>> 87721aa657bf03f54d81ccabb89c3953e257ce7a
+                    Double scoreVal = infoSnapshot.child("score").getValue(Double.class);
+                    if (scoreVal != null) item.setScore(scoreVal);
 
-                    Integer price = infoSnapshot.child("price").getValue(Integer.class);
-                    if (price != null) item.setPrice(price);
+                    Integer priceVal = infoSnapshot.child("price").getValue(Integer.class);
+                    if (priceVal != null) item.setPrice(priceVal);
 
-                    Integer id = infoSnapshot.child("Id").getValue(Integer.class);
-                    if (id != null) item.setId(id);
+                    Integer idVal = infoSnapshot.child("Id").getValue(Integer.class);
+                    if (idVal != null) item.setId(idVal);
 
                     String imagePath = infoSnapshot.child("ImagePath").getValue(String.class);
                     item.setImagePath(imagePath);
