@@ -1,9 +1,9 @@
 package com.midterm.travelapp_gobuddy;
 
 public class CategoryPlace {
-    private int image;
-    private String name;
-    private float rating;
+    private final int image;
+    private final String name;
+    private final float rating;
 
     public CategoryPlace(int image, String name, float rating) {
         this.image = image;

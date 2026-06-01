@@ -15,11 +15,10 @@ import java.util.ArrayList;
 
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHolder> {
 
-    private ArrayList<ItemModel> items;
-    private Context context;
+    private final ArrayList<ItemModel> items;
 
     public PopularAdapter(ArrayList<ItemModel> items) {
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     @NonNull
@@ -31,8 +30,6 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
                 false
         );
 
-        context = parent.getContext();
-
         return new ViewHolder(binding);
     }
 
@@ -40,7 +37,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
     public void onBindViewHolder(@NonNull PopularAdapter.ViewHolder holder, int position) {
         ItemModel item = items.get(position);
 
-        // ưu tiên title, nếu không có thì lấy Name
+        // Ưu tiên title, nếu không có thì lấy name
         String title = item.getTitle();
         if (title == null || title.isEmpty()) {
             title = item.getName();
@@ -75,28 +72,37 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
         }
 
         if (!imageUrl.isEmpty()) {
-            Glide.with(context)
+            Glide.with(holder.itemView.getContext())
                     .load(imageUrl)
+                    .placeholder(R.drawable.thumb_1)
+                    .error(R.drawable.thumb_1)
                     .into(holder.binding.pic);
         } else {
             holder.binding.pic.setImageResource(R.drawable.thumb_1);
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("object", item);
-            context.startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> openDetail(holder, item));
+    }
+
+    private void openDetail(ViewHolder holder, ItemModel item) {
+        Context context = holder.itemView.getContext();
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.putExtra("object", item);
+        context.startActivity(intent);
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return items.size();
     }
 
     public void updateData(ArrayList<ItemModel> newItems) {
         items.clear();
-        items.addAll(newItems);
+
+        if (newItems != null) {
+            items.addAll(newItems);
+        }
+
         notifyDataSetChanged();
     }
 

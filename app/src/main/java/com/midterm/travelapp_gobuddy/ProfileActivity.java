@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -33,6 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
     TextView txtNoBooking;
     RecyclerView rvBookingHistory;
     Button btnLogout;
+
+
+    EditText edtLastName, edtFirstName, edtBirthday, edtAddress;
+    Button btnEditProfile, btnSaveProfile;
 
     FirebaseAuth mAuth;
     DatabaseReference database;
@@ -58,6 +64,13 @@ public class ProfileActivity extends AppCompatActivity {
         rvBookingHistory = findViewById(R.id.rvBookingHistory);
         btnLogout = findViewById(R.id.btnLogout);
 
+        edtLastName = findViewById(R.id.edtLastName);
+        edtFirstName = findViewById(R.id.edtFirstName);
+        edtBirthday = findViewById(R.id.edtBirthday);
+        edtAddress = findViewById(R.id.edtAddress);
+        btnEditProfile = findViewById(R.id.btnEditProfile);
+        btnSaveProfile = findViewById(R.id.btnSaveProfile);
+
         rvBookingHistory.setLayoutManager(new LinearLayoutManager(this));
         bookingAdapter = new BookingHistoryAdapter(bookingList);
         rvBookingHistory.setAdapter(bookingAdapter);
@@ -67,6 +80,14 @@ public class ProfileActivity extends AppCompatActivity {
         bookingDatabase = FirebaseDatabase.getInstance().getReference("Bookings");
 
         loadUserInfo();
+
+        btnEditProfile.setOnClickListener(v -> {
+            showEditProfileMode();
+        });
+
+        btnSaveProfile.setOnClickListener(v -> {
+            saveUserInfo();
+        });
 
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
@@ -157,6 +178,11 @@ public class ProfileActivity extends AppCompatActivity {
                 txtAddress.setText(address);
                 txtStatus.setText("Đã đăng nhập");
 
+                edtLastName.setText(lastName);
+                edtFirstName.setText(firstName);
+                edtBirthday.setText(birthday);
+                edtAddress.setText(address);
+
                 String avatarText = "";
 
                 if (!lastName.isEmpty()) {
@@ -179,6 +205,124 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Lỗi: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    private void showEditProfileMode() {
+        edtLastName.setText(txtLastName.getText().toString());
+        edtFirstName.setText(txtFirstName.getText().toString());
+        edtBirthday.setText(txtBirthday.getText().toString());
+        edtAddress.setText(txtAddress.getText().toString());
+
+        txtLastName.setVisibility(View.GONE);
+        txtFirstName.setVisibility(View.GONE);
+        txtBirthday.setVisibility(View.GONE);
+        txtAddress.setVisibility(View.GONE);
+
+        edtLastName.setVisibility(View.VISIBLE);
+        edtFirstName.setVisibility(View.VISIBLE);
+        edtBirthday.setVisibility(View.VISIBLE);
+        edtAddress.setVisibility(View.VISIBLE);
+
+        btnEditProfile.setVisibility(View.GONE);
+        btnSaveProfile.setVisibility(View.VISIBLE);
+    }
+
+    // THÊM: Tắt chế độ chỉnh sửa
+    private void hideEditProfileMode() {
+        txtLastName.setVisibility(View.VISIBLE);
+        txtFirstName.setVisibility(View.VISIBLE);
+        txtBirthday.setVisibility(View.VISIBLE);
+        txtAddress.setVisibility(View.VISIBLE);
+
+        edtLastName.setVisibility(View.GONE);
+        edtFirstName.setVisibility(View.GONE);
+        edtBirthday.setVisibility(View.GONE);
+        edtAddress.setVisibility(View.GONE);
+
+        btnEditProfile.setVisibility(View.VISIBLE);
+        btnSaveProfile.setVisibility(View.GONE);
+    }
+
+    // THÊM: Lưu thông tin lên Firebase
+    private void saveUserInfo() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser == null) {
+            Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = currentUser.getUid();
+
+        String lastName = edtLastName.getText().toString().trim();
+        String firstName = edtFirstName.getText().toString().trim();
+        String birthday = edtBirthday.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+        String fullName = (lastName + " " + firstName).trim();
+
+        if (lastName.isEmpty()) {
+            edtLastName.setError("Vui lòng nhập họ");
+            edtLastName.requestFocus();
+            return;
+        }
+
+        if (firstName.isEmpty()) {
+            edtFirstName.setError("Vui lòng nhập tên");
+            edtFirstName.requestFocus();
+            return;
+        }
+
+        if (birthday.isEmpty()) {
+            edtBirthday.setError("Vui lòng nhập ngày sinh");
+            edtBirthday.requestFocus();
+            return;
+        }
+
+        if (address.isEmpty()) {
+            edtAddress.setError("Vui lòng nhập địa chỉ");
+            edtAddress.requestFocus();
+            return;
+        }
+
+        HashMap<String, Object> updateData = new HashMap<>();
+        updateData.put("lastName", lastName);
+        updateData.put("firstName", firstName);
+        updateData.put("birthday", birthday);
+        updateData.put("address", address);
+        updateData.put("name", fullName);
+
+        database.child(userId).updateChildren(updateData)
+                .addOnSuccessListener(unused -> {
+                    txtLastName.setText(lastName);
+                    txtFirstName.setText(firstName);
+                    txtBirthday.setText(birthday);
+                    txtAddress.setText(address);
+                    txtProfileName.setText(fullName);
+
+                    String avatarText = "";
+
+                    if (!lastName.isEmpty()) {
+                        avatarText += lastName.substring(0, 1).toUpperCase();
+                    }
+
+                    if (!firstName.isEmpty()) {
+                        avatarText += firstName.substring(0, 1).toUpperCase();
+                    }
+
+                    if (avatarText.isEmpty()) {
+                        avatarText = "U";
+                    }
+
+                    txtAvatarLetter.setText(avatarText);
+
+                    hideEditProfileMode();
+
+                    Toast.makeText(ProfileActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(ProfileActivity.this, "Lỗi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void loadBookingHistory(String userId) {

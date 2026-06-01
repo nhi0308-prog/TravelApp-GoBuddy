@@ -15,10 +15,10 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    private ArrayList<Category> items;
+    private final ArrayList<Category> items;
 
     public CategoryAdapter(ArrayList<Category> items) {
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     @NonNull
@@ -46,23 +46,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .load(drawableResourceId)
                 .into(holder.picImg);
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> openCategoryDetail(holder, item));
+        holder.picImg.setOnClickListener(v -> openCategoryDetail(holder, item));
+        holder.titleTxt.setOnClickListener(v -> openCategoryDetail(holder, item));
+    }
 
-        holder.picImg.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
-
-        holder.titleTxt.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
+    private void openCategoryDetail(ViewHolder holder, Category item) {
+        Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
+        intent.putExtra("category_name", item.getName());
+        holder.itemView.getContext().startActivity(intent);
     }
 
     @Override
@@ -70,7 +62,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTxt;
         ImageView picImg;
 

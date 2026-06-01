@@ -61,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
             } else if (id == R.id.bookmark) {
+                if (com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Toast.makeText(MainActivity.this, "Vui lòng đăng nhập để xem Saved", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
                 startActivity(intent);
             }
