@@ -86,7 +86,11 @@ public class FavoriteActivity extends AppCompatActivity {
                             item.setDescription(infoSnapshot.child("description").getValue(String.class));
                             item.setCategory(infoSnapshot.child("category").getValue(String.class));
                             item.setDuration(infoSnapshot.child("duration").getValue(String.class));
+                            String timeTour = infoSnapshot.child("timeTour").getValue(String.class);
+                            if (timeTour != null) item.setTimeTour(timeTour);
 
+                            String guideName = infoSnapshot.child("guideName").getValue(String.class);
+                            if (guideName != null) item.setGuideName(guideName);
                             Double score = infoSnapshot.child("score").getValue(Double.class);
                             if (score != null) item.setScore(score);
 

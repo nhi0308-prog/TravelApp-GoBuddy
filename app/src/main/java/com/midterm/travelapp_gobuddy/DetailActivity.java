@@ -63,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
         binding.ratingBar.setRating((float) object.getScore());
 
         binding.backBtn.setOnClickListener(v -> finish());
+        // Hiển thị lại timeTour và guideName đã lưu
 
         // =====================================================
         // XỬ LÝ GIÁ TOUR THEO SỐ KHÁCH
@@ -265,6 +266,10 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         final String[] selectedTime = {"08:30 AM"};
+        if (object.getTimeTour() != null && !object.getTimeTour().isEmpty()) {
+            selectedTime[0] = object.getTimeTour();
+            binding.btnSelectTime.setText(object.getTimeTour());
+        }
 
         binding.btnSelectTime.setOnClickListener(v -> {
 
@@ -333,6 +338,14 @@ public class DetailActivity extends AppCompatActivity {
                         }
 
                         spinnerAdapter.notifyDataSetChanged();
+                        if (object.getGuideName() != null) {
+                            for (int i = 0; i < guideNames.size(); i++) {
+                                if (guideNames.get(i).equals(object.getGuideName())) {
+                                    binding.spinnerGuides.setSelection(i);
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     @Override
@@ -406,6 +419,12 @@ public class DetailActivity extends AppCompatActivity {
                 infoMap.put("price", object.getPrice());
                 infoMap.put("score", object.getScore());
                 infoMap.put("title", object.getTitle());
+                infoMap.put("timeTour", selectedTime[0]);
+
+                String savedGuideName = (!guideNames.isEmpty())
+                        ? guideNames.get(binding.spinnerGuides.getSelectedItemPosition())
+                        : "Emily Waston";
+                infoMap.put("guideName", savedGuideName);
                 favInfoRef.setValue(infoMap)
                         .addOnSuccessListener(unused ->
                                 Toast.makeText(this, "Đã lưu", Toast.LENGTH_SHORT).show()
