@@ -14,11 +14,11 @@ import com.midterm.travelapp_gobuddy.databinding.ViewholderPopularBinding;
 import java.util.ArrayList;
 
 public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHolder> {
-    private ArrayList<PlaceGoModel> items;
+    private final ArrayList<PlaceGoModel> items;
     private Context context;
 
     public PlaceGoAdapter(ArrayList<PlaceGoModel> items) {
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     @NonNull
@@ -37,16 +37,18 @@ public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHold
         // Hiển thị tên địa điểm
         holder.binding.titleTxt.setText(item.getName());
 
-        // Dùng Glide kéo hình từ link ImagePath trên Firebase
-        Glide.with(context)
+        // Hiển thị ảnh địa điểm từ Firebase bằng Glide
+        Glide.with(holder.itemView.getContext())
                 .load(item.getImagePath())
+                .placeholder(R.drawable.intro_background)
+                .error(R.drawable.intro_background)
                 .into(holder.binding.pic);
 
-        // Sự kiện Click: Gói dữ liệu và mở trang chi tiết
+        // Mở màn hình chi tiết khi người dùng chọn một địa điểm
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PlaceGoDetailActivity.class);
+            Intent intent = new Intent(v.getContext(), PlaceGoDetailActivity.class);
             intent.putExtra("object_place", item);
-            context.startActivity(intent);
+            v.getContext().startActivity(intent);
         });
     }
 
@@ -55,7 +57,7 @@ public class PlaceGoAdapter extends RecyclerView.Adapter<PlaceGoAdapter.ViewHold
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ViewholderPopularBinding binding;
 
         public ViewHolder(ViewholderPopularBinding binding) {
