@@ -15,10 +15,10 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    private ArrayList<Category> items;
+    private final ArrayList<Category> items;
 
     public CategoryAdapter(ArrayList<Category> items) {
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     @NonNull
@@ -62,7 +62,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTxt;
         ImageView picImg;
 
