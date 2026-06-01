@@ -244,19 +244,11 @@ public class DetailActivity extends AppCompatActivity {
             binding.thumbScroll.setVisibility(View.GONE);
         }
 
-        // =====================================================
-        // DURATION
-        // =====================================================
-
         if (object.getDuration() != null && !object.getDuration().isEmpty()) {
             binding.txtDurationDetail.setText(object.getDuration());
         } else {
             binding.txtDurationDetail.setText("Chưa cập nhật");
         }
-
-        // =====================================================
-        // TĂNG GIẢM SỐ KHÁCH
-        // =====================================================
 
         binding.btnMinusGuest.setOnClickListener(v -> {
             if (guestCount[0] > 1) {
@@ -271,10 +263,6 @@ public class DetailActivity extends AppCompatActivity {
             binding.txtGuestCount.setText(String.valueOf(guestCount[0]));
             updateTotalPrice.run();
         });
-
-        // =====================================================
-        // CHỌN GIỜ TOUR
-        // =====================================================
 
         final String[] selectedTime = {"08:30 AM"};
 
@@ -298,10 +286,6 @@ public class DetailActivity extends AppCompatActivity {
             timePickerDialog.show();
         });
 
-        // =====================================================
-        // LOAD TOUR GUIDE TỪ FIREBASE
-        // =====================================================
-
         ArrayList<String> guideNames = new ArrayList<>();
         ArrayList<String> guidePhones = new ArrayList<>();
 
@@ -317,7 +301,6 @@ public class DetailActivity extends AppCompatActivity {
         );
 
         binding.spinnerGuides.setAdapter(spinnerAdapter);
-
         FirebaseDatabase.getInstance()
                 .getReference("Guides")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -358,10 +341,6 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 });
 
-        // =====================================================
-        // FAVORITE TOUR
-        // =====================================================
-
         String tourKey = object.getTitle().replaceAll("[^a-zA-Z0-9]", "_");
 
         DatabaseReference favInfoRef =
@@ -378,7 +357,6 @@ public class DetailActivity extends AppCompatActivity {
 
         final boolean[] isFavorited = {false};
 
-        // Kiểm tra trạng thái favorite
         favInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -466,7 +444,6 @@ public class DetailActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Lỗi xóa Favorites", Toast.LENGTH_SHORT).show()
                         );
             }
-
             updateHeartIcon(isFavorited[0]);
         });
 
