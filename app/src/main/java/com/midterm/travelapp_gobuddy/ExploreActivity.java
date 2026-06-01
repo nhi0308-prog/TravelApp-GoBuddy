@@ -2,7 +2,6 @@ package com.midterm.travelapp_gobuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ public class ExploreActivity extends AppCompatActivity {
     private ActivityExploreBinding binding;
     private ArrayList<ItemModel> allPlaces = new ArrayList<>();
     private ArrayList<ItemModel> filteredPlaces = new ArrayList<>();
+    private ArrayList<String> categories = new ArrayList<>(); // Đưa danh sách danh mục làm biến toàn cục
     private PopularAdapter tourAdapter;
     private LocalCategoryAdapter categoryAdapter;
     private int selectedPosition = 0;
@@ -28,36 +28,39 @@ public class ExploreActivity extends AppCompatActivity {
         binding = ActivityExploreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Khởi tạo danh sách danh mục trước
+        categories.add("Beach");
+        categories.add("Mountain");
+        categories.add("Adventure");
+        categories.add("Camping");
+        categories.add("Cultural");
+
         initExploreCategories();
         initTourRecyclerView();
         loadDataFromFirebase();
+        setupBottomMenu();
+    }
 
-        // ====================================================================
-        // ===== ĐÃ SỬA: ÉP NÚT EXPLORER PHÌNH TO VÀ SÁNG XANH THEO ĐÚNG ID =====
-        // ====================================================================
+    private void setupBottomMenu() {
         binding.bottomMenu.post(() -> {
             try {
-                // Đổi thành R.id.explorer (có chữ r) cho trùng khớp với file menu XML của bạn
                 binding.bottomMenu.setItemSelected(R.id.explorer, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
-        // Xử lý chuyển trang mượt mà khi bấm các nút khác trên menu
         binding.bottomMenu.setOnItemSelectedListener(id -> {
+            Intent intent = null;
             if (id == R.id.home) {
-                Intent intent = new Intent(ExploreActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0); // Giúp đứng im thanh menu không bị giật màn hình
-                finish();
+                intent = new Intent(ExploreActivity.this, MainActivity.class);
             } else if (id == R.id.bookmark) {
-                Intent intent = new Intent(ExploreActivity.this, FavoriteActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
+                intent = new Intent(ExploreActivity.this, FavoriteActivity.class);
             } else if (id == R.id.profile) {
-                Intent intent = new Intent(ExploreActivity.this, ProfileActivity.class);
+                intent = new Intent(ExploreActivity.this, ProfileActivity.class);
+            }
+
+            if (intent != null) {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -66,16 +69,8 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     private void initExploreCategories() {
-        ArrayList<String> categories = new ArrayList<>();
-        categories.add("Beach");
-        categories.add("Mountain");
-        categories.add("Adventure");
-        categories.add("Camping");
-        categories.add("Cultural");
-
         binding.rvExploreCategories.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         categoryAdapter = new LocalCategoryAdapter(categories);
         binding.rvExploreCategories.setAdapter(categoryAdapter);
     }
@@ -100,13 +95,10 @@ public class ExploreActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        filterTours("Beach");
-                        // Mặc định hiển thị tất cả lúc mới vào, bấm nút nào lọc nút đó
-                        //filteredPlaces.clear();
-                        //filteredPlaces.addAll(allPlaces);
-                        //f (tourAdapter != null) {
-                           // tourAdapter.notifyDataSetChanged();
-                        //}
+                        // ĐÃ SỬA: Lọc động theo vị trí đang được chọn (phòng trường hợp mạng chậm)
+                        if (!categories.isEmpty()) {
+                            filterTours(categories.get(selectedPosition));
+                        }
                     }
 
                     @Override
@@ -127,8 +119,12 @@ public class ExploreActivity extends AppCompatActivity {
             }
         }
 
+        // ĐÃ SỬA: Không tự động addAll() khi trống nữa. Thay vào đó ẩn/hiện thông báo trống nếu muốn.
         if (filteredPlaces.isEmpty()) {
-            filteredPlaces.addAll(allPlaces);
+            // Bạn có thể thêm một cái txtNoData.setVisibility(View.VISIBLE) ở đây nếu có view thông báo
+            binding.rvExploreTours.setVisibility(View.GONE);
+        } else {
+            binding.rvExploreTours.setVisibility(View.VISIBLE);
         }
 
         if (tourAdapter != null) {
@@ -146,10 +142,12 @@ public class ExploreActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Mẹo: Nên tạo 1 file XML item_category.xml riêng để thiết kế giao diện đẹp hơn.
+            // Đoạn này giữ nguyên cấu trúc cũ của bạn nhưng tối ưu hóa padding.
             TextView textView = new TextView(parent.getContext());
             textView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            textView.setPadding(40, 20, 40, 20);
+            textView.setPadding(45, 25, 45, 25);
             textView.setTextSize(16);
             return new ViewHolder(textView);
         }
@@ -169,8 +167,12 @@ public class ExploreActivity extends AppCompatActivity {
             }
 
             holder.itemView.setOnClickListener(v -> {
+                int currentPos = holder.getAdapterPosition();
+                if (currentPos == RecyclerView.NO_POSITION || currentPos == selectedPosition) return;
+
                 int oldPos = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
+                selectedPosition = currentPos;
+
                 notifyItemChanged(oldPos);
                 notifyItemChanged(selectedPosition);
 
@@ -180,7 +182,7 @@ public class ExploreActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return list.size();
+            return list != null ? list.size() : 0;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
