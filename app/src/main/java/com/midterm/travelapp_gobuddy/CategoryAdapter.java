@@ -46,23 +46,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .load(drawableResourceId)
                 .into(holder.picImg);
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> openCategoryDetail(holder, item));
+        holder.picImg.setOnClickListener(v -> openCategoryDetail(holder, item));
+        holder.titleTxt.setOnClickListener(v -> openCategoryDetail(holder, item));
+    }
 
-        holder.picImg.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
-
-        holder.titleTxt.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
-            intent.putExtra("category_name", item.getName());
-            holder.itemView.getContext().startActivity(intent);
-        });
+    private void openCategoryDetail(ViewHolder holder, Category item) {
+        Intent intent = new Intent(holder.itemView.getContext(), CategoryDetailActivity.class);
+        intent.putExtra("category_name", item.getName());
+        holder.itemView.getContext().startActivity(intent);
     }
 
     @Override
